@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Work Sans', sans-serif; color: #1C2521; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+    a { color: #1B3A66; text-decoration: none; }
+    a:hover { color: #0F2A4D; }
+    button { font-family: 'Work Sans', sans-serif; cursor: pointer; }
+    .ph {
+      background: #E7E2D4;
+      border: 1px solid #D8D1BE;
+      color: #8A8271;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
+    }
+  
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .marquee-wrap { overflow: hidden; }
+    .marquee-track { display: flex; width: max-content; gap: 56px; animation: marquee 24s linear infinite; }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .card-anim { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-anim:hover { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(20,33,61,0.14); }
+    button { transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease; }
+    button:hover { transform: translateY(-2px); filter: brightness(1.06); }
+    a { transition: color 0.15s ease; }
+</style>
+</helmet>
+<div style="width: 1440px; background: #F7F4EC; display: flex; flex-direction: column;">
+
+  <!-- Header -->
+  <div style="height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px; background: #FFFFFF; border-bottom: 1px solid #E4DFD3;">
+    <img src="/_blob/4c2ef46de2c0671cf64f9221f6570db7" alt="BharatTrip" style="height: 52px; width: auto; display: block;">
+    <div style="display: flex; gap: 32px; font-size: 15px; color: #3B443F;">
+      <a href="#">Destinations</a>
+      <a href="#">Places</a>
+      <a href="#">Packages</a>
+      <a href="#">Things To Do</a>
+      <a href="#">Travel Guides</a>
+      <a href="#">Blog</a>
+      <a href="#">Gallery</a>
+      <a href="#">Contact</a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <a href="#" style="font-size: 15px; color: #1C2521;">+91 98765 43210</a>
+      <button style="background: #F26A21; color: #fff; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600;">Enquire Now</button>
+    </div>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap" style="background: #14213D; padding: 16px 0;">
+    <div class="marquee-track">
+      <sc-for list="{{marqueeItems}}" as="m" hint-placeholder-count="6">
+        <div style="display: flex; align-items: center; gap: 12px; white-space: nowrap; flex-shrink: 0;">
+          <span style="color: #F26A21; font-size: 18px;">&#9670;</span>
+          <span style="color: #FFFFFF; font-size: 15px; font-weight: 600; letter-spacing: 0.02em;">{{m}}</span>
+        </div>
+      </sc-for>
+      <sc-for list="{{marqueeItems}}" as="m2" hint-placeholder-count="6">
+        <div style="display: flex; align-items: center; gap: 12px; white-space: nowrap; flex-shrink: 0;">
+          <span style="color: #F26A21; font-size: 18px;">&#9670;</span>
+          <span style="color: #FFFFFF; font-size: 15px; font-weight: 600; letter-spacing: 0.02em;">{{m2}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div style="position: relative; height: 660px; background: #14213D; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 64px; overflow: visible;">
+    <div style="max-width: 760px; text-align: center; display: flex; flex-direction: column; gap: 20px;">
+      <div style="font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #F26A21; font-weight: 600;">Himachal Pradesh &amp; Beyond</div>
+      <h1 class="fade-up" style="font-size: 60px; line-height: 1.1; color: #FFFFFF; font-weight: 600;">Discover the Heart of the Himalayas</h1>
+      <div class="fade-up" style="font-size: 18px; color: #CBD3CE; animation-delay: 0.15s;">Handpicked destinations, curated packages and local guides for your next mountain escape.</div>
+    </div>
+    <div style="position: absolute; bottom: -56px; width: 1180px; background: #FFFFFF; border-radius: 16px; padding: 24px 28px; display: flex; gap: 16px; align-items: flex-end; box-shadow: 0 24px 48px rgba(28,37,33,0.18);">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 12px; color: #8A8271; text-transform: uppercase; letter-spacing: 0.05em;">Destination</label>
+        <input type="text" placeholder="Where to? e.g. Manali" style="border: 1px solid #E4DFD3; border-radius: 8px; padding: 12px 14px; font-size: 15px;">
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 12px; color: #8A8271; text-transform: uppercase; letter-spacing: 0.05em;">Travel Dates</label>
+        <input type="text" placeholder="Select dates" style="border: 1px solid #E4DFD3; border-radius: 8px; padding: 12px 14px; font-size: 15px;">
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label style="font-size: 12px; color: #8A8271; text-transform: uppercase; letter-spacing: 0.05em;">Travellers</label>
+        <input type="text" placeholder="2 Adults" style="border: 1px solid #E4DFD3; border-radius: 8px; padding: 12px 14px; font-size: 15px;">
+      </div>
+      <button style="background: #1B3A66; color: #fff; border-radius: 8px; padding: 14px 28px; font-size: 15px; font-weight: 600;">Search</button>
+    </div>
+  </div>
+
+  <!-- Featured Destinations -->
+  <div style="padding: 140px 64px 72px; display: flex; flex-direction: column; gap: 32px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <div style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #F26A21; font-weight: 600; margin-bottom: 8px;">Explore</div>
+        <h2 style="font-size: 34px;">Featured Destinations</h2>
+      </div>
+      <a href="#" style="font-size: 15px; font-weight: 600;">View all destinations →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px;">
+      <sc-for list="{{destinations}}" as="d" hint-placeholder-count="4">
+        <div class="card-anim" style="background: #fff; border: 1px solid #E4DFD3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;">
+          <div class="ph" style="height: 200px;">{{d.photoLabel}}</div>
+          <div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;">
+            <h3 style="font-size: 19px;">{{d.name}}</h3>
+            <div style="font-size: 13px; color: #6B7570;">{{d.meta}}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Travel Packages -->
+  <div style="padding: 24px 64px 72px; display: flex; flex-direction: column; gap: 32px; background: #FFFFFF;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <div style="font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: #F26A21; font-weight: 600; margin-bottom: 8px;">Plan Your Trip</div>
+        <h2 style="font-size: 34px;">Popular Travel Packages</h2>
+      </div>
+      <a href="#" style="font-size: 15px; font-weight: 600;">View all packages →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+      <sc-for list="{{packages}}" as="p" hint-placeholder-count="3">
+        <div class="card-anim" style="border: 1px solid #E4DFD3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;">
+          <div class="ph" style="height: 220px;">{{p.photoLabel}}</div>
+          <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+            <h3 style="font-size: 19px;">{{p.name}}</h3>
+            <div style="font-size: 13px; color: #6B7570;">{{p.duration}}</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+              <div style="font-size: 17px; font-weight: 600; color: #1B3A66;">{{p.price}}</div>
+              <button style="background: #1C2521; color: #fff; border-radius: 999px; padding: 9px 18px; font-size: 13px; font-weight: 600;">View Package</button>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Things To Do -->
+  <div style="padding: 72px 64px; display: flex; flex-direction: column; gap: 32px;">
+    <h2 style="font-size: 34px;">Things To Do</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+      <sc-for list="{{activities}}" as="a" hint-placeholder-count="6">
+        <div class="card-anim" style="display: flex; gap: 14px; align-items: center; padding: 16px; background: #fff; border: 1px solid #E4DFD3; border-radius: 12px;">
+          <div class="ph" style="width: 56px; height: 56px; border-radius: 10px; flex-shrink: 0; font-size: 10px;">ICON</div>
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <div style="font-size: 16px; font-weight: 600;">{{a.name}}</div>
+            <div style="font-size: 13px; color: #6B7570;">{{a.location}}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Popular Places -->
+  <div style="padding: 0 64px 72px; display: flex; flex-direction: column; gap: 24px;">
+    <h2 style="font-size: 26px;">Popular Places</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+      <sc-for list="{{places}}" as="pl" hint-placeholder-count="8">
+        <div style="background: #fff; border: 1px solid #E4DFD3; border-radius: 999px; padding: 10px 20px; font-size: 14px;">{{pl.name}}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Blogs & Guides -->
+  <div style="padding: 72px 64px; display: flex; flex-direction: column; gap: 40px; background: #FFFFFF;">
+    <div style="display: flex; flex-direction: column; gap: 32px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+        <h2 style="font-size: 34px;">Latest From The Blog</h2>
+        <a href="#" style="font-size: 15px; font-weight: 600;">View all posts →</a>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+        <sc-for list="{{blogs}}" as="b" hint-placeholder-count="3">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div class="ph" style="height: 180px; border-radius: 12px;">{{b.photoLabel}}</div>
+            <div style="font-size: 12px; color: #F26A21; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{b.category}}</div>
+            <h3 style="font-size: 18px; line-height: 1.3;">{{b.title}}</h3>
+            <div style="font-size: 13px; color: #6B7570;">{{b.meta}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <h2 style="font-size: 26px;">Travel Guides</h2>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px;">
+        <sc-for list="{{guides}}" as="g" hint-placeholder-count="3">
+          <div style="padding: 20px; border: 1px solid #E4DFD3; border-radius: 12px; display: flex; flex-direction: column; gap: 8px;">
+            <h3 style="font-size: 17px;">{{g.title}}</h3>
+            <div style="font-size: 14px; color: #6B7570;">{{g.desc}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Preview -->
+  <div style="padding: 72px 64px; display: flex; flex-direction: column; gap: 28px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+      <h2 style="font-size: 34px;">Photo Gallery</h2>
+      <a href="#" style="font-size: 15px; font-weight: 600;">View full gallery →</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+      <sc-for list="{{gallery}}" as="ph2" hint-placeholder-count="6">
+        <div class="ph" style="height: 200px; border-radius: 10px;">{{ph2.label}}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Why Choose Us -->
+  <div style="padding: 72px 64px; background: #14213D; display: flex; flex-direction: column; gap: 40px;">
+    <h2 style="font-size: 34px; color: #FFFFFF;">Why Choose Us</h2>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px;">
+      <sc-for list="{{reasons}}" as="r" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="width: 48px; height: 48px; border-radius: 10px; background: #1F335C; display: flex; align-items: center; justify-content: center; color: #F26A21; font-size: 20px; font-weight: 700;">{{r.icon}}</div>
+          <div style="font-size: 18px; font-weight: 600; color: #FFFFFF;">{{r.title}}</div>
+          <div style="font-size: 14px; color: #AEB7B1; line-height: 1.5;">{{r.desc}}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <div style="padding: 72px 64px; display: flex; flex-direction: column; gap: 32px; background: #FFFFFF;">
+    <h2 style="font-size: 34px; text-align: center;">What Travellers Say</h2>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+      <sc-for list="{{testimonials}}" as="t" hint-placeholder-count="3">
+        <div class="card-anim" style="padding: 24px; border: 1px solid #E4DFD3; border-radius: 14px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="color: #F26A21; font-size: 14px; letter-spacing: 0.1em;">★★★★★</div>
+          <div style="font-size: 15px; color: #3B443F; line-height: 1.6;">&ldquo;{{t.quote}}&rdquo;</div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: 4px;">
+            <div style="width: 40px; height: 40px; border-radius: 999px; background: #E7E2D4;"></div>
+            <div>
+              <div style="font-size: 14px; font-weight: 600;">{{t.name}}</div>
+              <div style="font-size: 12px; color: #6B7570;">{{t.location}}</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div style="padding: 72px 64px; display: flex; flex-direction: column; gap: 24px; max-width: 900px;">
+    <h2 style="font-size: 34px;">Frequently Asked Questions</h2>
+    <sc-for list="{{faqs}}" as="f" hint-placeholder-count="5">
+      <div style="border-bottom: 1px solid #E4DFD3; padding: 18px 0; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 600;">
+          <div>{{f.q}}</div>
+          <div style="color: #F26A21; font-size: 20px;">+</div>
+        </div>
+        <div style="font-size: 14px; color: #6B7570; line-height: 1.6;">{{f.a}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- Newsletter -->
+  <div style="padding: 56px 64px; background: #1B3A66; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <h3 style="font-size: 26px; color: #FFFFFF;">Get travel inspiration in your inbox</h3>
+      <div style="font-size: 15px; color: #D7E4DF; margin-top: 6px;">Seasonal guides, new packages and offers — no spam.</div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <input type="email" placeholder="Your email address" style="width: 320px; padding: 14px 16px; border-radius: 8px; border: none; font-size: 15px;">
+      <button style="background: #F26A21; color: #fff; border-radius: 8px; padding: 14px 26px; font-size: 15px; font-weight: 600;">Subscribe</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="padding: 64px 64px 32px; background: #1C2521; color: #C9CFCB; display: flex; flex-direction: column; gap: 48px;">
+    <div style="display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 32px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <div style="background: #FFFFFF; border-radius: 8px; padding: 8px 12px; display: inline-flex; width: fit-content;"><img src="/_blob/4c2ef46de2c0671cf64f9221f6570db7" alt="BharatTrip" style="height: 34px; width: auto; display: block;"></div>
+        <div style="font-size: 14px; line-height: 1.6;">Curated travel experiences across Himachal Pradesh, run by locals who know every valley.</div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 13px; color: #8A9490; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Explore</div>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Destinations</a>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Packages</a>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Things To Do</a>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Travel Guides</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 13px; color: #8A9490; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Company</div>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">About Us</a>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Blog</a>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Gallery</a>
+        <a href="#" style="color: #C9CFCB; font-size: 14px;">Contact</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 13px; color: #8A9490; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">Contact</div>
+        <div style="font-size: 14px;">+91 98765 43210</div>
+        <div style="font-size: 14px;">hello@bharattrip.in</div>
+        <div style="font-size: 14px;">Hamirpur, Himachal Pradesh</div>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #2C332F; padding-top: 24px; display: flex; justify-content: space-between; font-size: 13px; color: #7C867F;">
+      <div>© 2026 BharatTrip. All rights reserved.</div>
+      <div style="display: flex; gap: 20px;">
+        <a href="#" style="color: #7C867F;">Privacy Policy</a>
+        <a href="#" style="color: #7C867F;">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":3830}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      marqueeItems: ['500+ Happy Travellers', '50+ Curated Destinations', '24/7 Travel Support', 'Best Price Guarantee', 'Handpicked Stays', '100+ Travel Packages'],
+      destinations: [
+        { name: 'Manali', meta: '18 places · Best time: Mar – Jun', photoLabel: '[Destination Photo — Manali]' },
+        { name: 'Shimla', meta: '14 places · Best time: Mar – Jun', photoLabel: '[Destination Photo — Shimla]' },
+        { name: 'Dharamshala', meta: '9 places · Best time: Sep – Nov', photoLabel: '[Destination Photo — Dharamshala]' },
+        { name: 'Kasol', meta: '7 places · Best time: Mar – Jun', photoLabel: '[Destination Photo — Kasol]' },
+      ],
+      packages: [
+        { name: 'Manali & Solang Valley — 4N/5D', duration: '4 Nights · 5 Days · Family Friendly', price: 'From ₹14,999', photoLabel: '[Package Photo — Manali]' },
+        { name: 'Shimla Heritage Trail — 3N/4D', duration: '3 Nights · 4 Days · Couples', price: 'From ₹10,499', photoLabel: '[Package Photo — Shimla]' },
+        { name: 'Spiti Valley Road Trip — 6N/7D', duration: '6 Nights · 7 Days · Adventure', price: 'From ₹22,999', photoLabel: '[Package Photo — Spiti]' },
+      ],
+      activities: [
+        { name: 'Paragliding', location: 'Solang Valley' },
+        { name: 'River Rafting', location: 'Kullu' },
+        { name: 'Trekking', location: 'Triund' },
+        { name: 'Camping', location: 'Kasol' },
+        { name: 'Skiing', location: 'Narkanda' },
+        { name: 'Sightseeing', location: 'Shimla' },
+      ],
+      places: [
+        { name: 'Mall Road' }, { name: 'Rohtang Pass' }, { name: 'Solang Valley' },
+        { name: 'Kufri' }, { name: 'Dharamshala' }, { name: 'Kasol' },
+        { name: 'Bir Billing' }, { name: 'Chamba' },
+      ],
+      blogs: [
+        { category: 'Budget Travel', title: 'A Weekend in Manali Under ₹8,000', meta: 'Sep 12, 2026 · 6 min read', photoLabel: '[Blog Photo]' },
+        { category: 'Family Travel', title: 'Best Family Stays in Shimla', meta: 'Sep 5, 2026 · 5 min read', photoLabel: '[Blog Photo]' },
+        { category: 'Adventure', title: 'First-Timer’s Guide to Paragliding', meta: 'Aug 28, 2026 · 7 min read', photoLabel: '[Blog Photo]' },
+      ],
+      guides: [
+        { title: 'Complete Shimla Travel Guide', desc: 'Everything to see, eat and do in 3 days.' },
+        { title: 'Himachal Road Trip Guide', desc: 'The best 7-day driving route through the hills.' },
+        { title: 'Budget Travel Guide', desc: 'See the mountains without breaking the bank.' },
+      ],
+      gallery: [
+        { label: '[Gallery Photo 1]' }, { label: '[Gallery Photo 2]' }, { label: '[Gallery Photo 3]' },
+        { label: '[Gallery Photo 4]' }, { label: '[Gallery Photo 5]' }, { label: '[Gallery Photo 6]' },
+      ],
+      reasons: [
+        { icon: '01', title: 'Local Experts', desc: 'Every itinerary is built by guides who live here.' },
+        { icon: '02', title: 'Best Price Guarantee', desc: 'Direct pricing with no hidden middlemen fees.' },
+        { icon: '03', title: '24/7 Support', desc: 'Reach us anytime during your trip, by call or WhatsApp.' },
+        { icon: '04', title: 'Handpicked Stays', desc: 'We personally vet every stay we recommend.' },
+      ],
+      testimonials: [
+        { quote: 'Our Manali trip was planned perfectly — every detail was taken care of.', name: 'Ritu Sharma', location: 'Delhi' },
+        { quote: 'The local guide made all the difference for our trek to Triund.', name: 'Arjun Mehta', location: 'Mumbai' },
+        { quote: 'Best travel agency for Himachal, hands down. Booking again next year.', name: 'Priya Nair', location: 'Bengaluru' },
+      ],
+      faqs: [
+        { q: 'Do I need to create an account to book?', a: 'No — browse freely and send an enquiry; our team confirms details over call or WhatsApp.' },
+        { q: 'What is the best time to visit Himachal Pradesh?', a: 'March to June and September to November offer the most pleasant weather across most regions.' },
+        { q: 'Can packages be customised?', a: 'Yes, every package can be tailored to your dates, group size and budget — just enquire.' },
+        { q: 'How do I pay for a package?', a: 'Payment is arranged directly with our team after your itinerary is confirmed.' },
+        { q: 'Do you offer group discounts?', a: 'Yes, groups of 6 or more get special pricing — mention your group size in your enquiry.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

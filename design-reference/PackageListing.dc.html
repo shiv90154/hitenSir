@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Work Sans', sans-serif; color: #1C2521; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+    a { color: #1B3A66; text-decoration: none; }
+    .ph {
+      background: #E7E2D4; border: 1px solid #D8D1BE; color: #8A8271;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
+    }
+  
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .marquee-wrap { overflow: hidden; }
+    .marquee-track { display: flex; width: max-content; gap: 56px; animation: marquee 24s linear infinite; }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .card-anim { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-anim:hover { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(20,33,61,0.14); }
+    button { transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease; }
+    button:hover { transform: translateY(-2px); filter: brightness(1.06); }
+    a { transition: color 0.15s ease; }
+</style>
+</helmet>
+<div style="width: 1440px; background: #F7F4EC; display: flex; flex-direction: column;">
+
+  <div style="height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px; background: #FFFFFF; border-bottom: 1px solid #E4DFD3;">
+    <img src="/_blob/4c2ef46de2c0671cf64f9221f6570db7" alt="BharatTrip" style="height: 52px; width: auto; display: block;">
+    <div style="display: flex; gap: 32px; font-size: 15px; color: #3B443F;">
+      <a href="#">Destinations</a><a href="#">Places</a><a href="#" style="color: #1B3A66; font-weight: 600;">Packages</a><a href="#">Things To Do</a><a href="#">Blog</a><a href="#">Contact</a>
+    </div>
+    <button style="background: #F26A21; color: #fff; border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600;">Enquire Now</button>
+  </div>
+
+  <div style="padding: 40px 64px 0; display: flex; flex-direction: column; gap: 8px;">
+    <div style="font-size: 13px; color: #6B7570;">Home / <span style="color: #1C2521; font-weight: 600;">Packages</span></div>
+    <h1 style="font-size: 38px;">Travel Packages</h1>
+    <div style="font-size: 15px; color: #6B7570;">36 curated packages across Himachal Pradesh</div>
+  </div>
+
+  <div style="padding: 24px 64px 0; display: flex; gap: 12px; flex-wrap: wrap;">
+    <sc-for list="{{filters}}" as="f" hint-placeholder-count="7">
+      <div style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 999px; padding: 10px 18px; font-size: 14px;">{{f}}</div>
+    </sc-for>
+  </div>
+
+  <div style="padding: 32px 64px 72px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;">
+    <sc-for list="{{packages}}" as="p" hint-placeholder-count="9">
+      <div class="card-anim" style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column;">
+        <div class="ph" style="height: 200px;">{{p.photoLabel}}</div>
+        <div style="padding: 18px 20px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: #F26A21; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{p.category}}</div>
+          <h3 style="font-size: 18px;">{{p.name}}</h3>
+          <div style="font-size: 13px; color: #6B7570;">{{p.duration}} · {{p.destination}}</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+            <div style="font-size: 17px; font-weight: 600; color: #1B3A66;">{{p.price}}</div>
+            <button style="background: #1C2521; color: #fff; border: none; border-radius: 999px; padding: 9px 18px; font-size: 13px; font-weight: 600;">View Details</button>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="padding: 0 64px 72px; display: flex; justify-content: center; gap: 8px;">
+    <sc-for list="{{pages}}" as="pg" hint-placeholder-count="4">
+      <div style="width: 36px; height: 36px; border-radius: 8px; border: 1px solid #E4DFD3; background: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px;">{{pg}}</div>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":1480}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      filters: ['All', 'Adventure', 'Family', 'Honeymoon', 'Budget', 'Luxury', 'Weekend'],
+      packages: [
+        { category: 'Family', name: 'Manali & Solang Valley — 4N/5D', duration: '4N/5D', destination: 'Manali', price: 'From ₹14,999', photoLabel: '[Photo]' },
+        { category: 'Couples', name: 'Shimla Heritage Trail — 3N/4D', duration: '3N/4D', destination: 'Shimla', price: 'From ₹10,499', photoLabel: '[Photo]' },
+        { category: 'Adventure', name: 'Spiti Valley Road Trip — 6N/7D', duration: '6N/7D', destination: 'Spiti', price: 'From ₹22,999', photoLabel: '[Photo]' },
+        { category: 'Weekend', name: 'Kasol Getaway — 2N/3D', duration: '2N/3D', destination: 'Kasol', price: 'From ₹6,999', photoLabel: '[Photo]' },
+        { category: 'Honeymoon', name: 'Manali Honeymoon Special — 3N/4D', duration: '3N/4D', destination: 'Manali', price: 'From ₹18,499', photoLabel: '[Photo]' },
+        { category: 'Luxury', name: 'Dharamshala Retreat — 4N/5D', duration: '4N/5D', destination: 'Dharamshala', price: 'From ₹28,999', photoLabel: '[Photo]' },
+        { category: 'Adventure', name: 'Bir Billing Paragliding Trip — 2N/3D', duration: '2N/3D', destination: 'Bir Billing', price: 'From ₹9,499', photoLabel: '[Photo]' },
+        { category: 'Family', name: 'Shimla-Kufri Combo — 4N/5D', duration: '4N/5D', destination: 'Shimla', price: 'From ₹13,499', photoLabel: '[Photo]' },
+        { category: 'Budget', name: 'Backpacker’s Kasol Trail — 3N/4D', duration: '3N/4D', destination: 'Kasol', price: 'From ₹5,999', photoLabel: '[Photo]' },
+      ],
+      pages: [1, 2, 3, 4],
+    };
+  }
+}
+</script>
+</body>
+</html>

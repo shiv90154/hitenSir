@@ -1,0 +1,31 @@
+import { prisma } from "@/lib/db/client";
+
+export interface SiteSettings {
+  siteName: string;
+  tagline: string;
+  contactEmail: string;
+  contactPhone: string;
+  address: string;
+  socialFacebook: string;
+  socialInstagram: string;
+  socialTwitter: string;
+  socialYoutube: string;
+}
+
+export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  siteName: "BharatTrip",
+  tagline: "Discover Himachal Pradesh",
+  contactEmail: "",
+  contactPhone: "",
+  address: "",
+  socialFacebook: "",
+  socialInstagram: "",
+  socialTwitter: "",
+  socialYoutube: "",
+};
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const row = await prisma.websiteSetting.findUnique({ where: { key: "site" } });
+  if (!row) return DEFAULT_SITE_SETTINGS;
+  return { ...DEFAULT_SITE_SETTINGS, ...(row.value as Partial<SiteSettings>) };
+}

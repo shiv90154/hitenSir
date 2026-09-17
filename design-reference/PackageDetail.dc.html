@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Work Sans', sans-serif; color: #1C2521; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+    a { color: #1B3A66; text-decoration: none; }
+    .ph {
+      background: #E7E2D4; border: 1px solid #D8D1BE; color: #8A8271;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
+    }
+  
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .marquee-wrap { overflow: hidden; }
+    .marquee-track { display: flex; width: max-content; gap: 56px; animation: marquee 24s linear infinite; }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .card-anim { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-anim:hover { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(20,33,61,0.14); }
+    button { transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease; }
+    button:hover { transform: translateY(-2px); filter: brightness(1.06); }
+    a { transition: color 0.15s ease; }
+</style>
+</helmet>
+<div style="width: 1440px; background: #F7F4EC; display: flex; flex-direction: column;">
+
+  <div style="height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px; background: #FFFFFF; border-bottom: 1px solid #E4DFD3;">
+    <img src="/_blob/4c2ef46de2c0671cf64f9221f6570db7" alt="BharatTrip" style="height: 52px; width: auto; display: block;">
+    <div style="display: flex; gap: 32px; font-size: 15px; color: #3B443F;">
+      <a href="#">Destinations</a><a href="#">Places</a><a href="#" style="color: #1B3A66; font-weight: 600;">Packages</a><a href="#">Things To Do</a><a href="#">Blog</a><a href="#">Contact</a>
+    </div>
+    <button style="background: #F26A21; color: #fff; border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600;">Enquire Now</button>
+  </div>
+
+  <div style="padding: 20px 64px 0; font-size: 13px; color: #6B7570;">Home / Packages / <span style="color: #1C2521; font-weight: 600;">Manali &amp; Solang Valley — 4N/5D</span></div>
+
+  <div style="padding: 20px 64px 0; display: grid; grid-template-columns: 2fr 1fr; gap: 12px;">
+    <div class="ph" style="height: 380px; border-radius: 16px 0 0 16px;">[Cover Photo]</div>
+    <div style="display: grid; grid-template-rows: 1fr 1fr; gap: 12px;">
+      <div class="ph" style="border-radius: 0 16px 0 0;">[Gallery Photo]</div>
+      <div class="ph" style="border-radius: 0 0 16px 0;">[Gallery Photo]</div>
+    </div>
+  </div>
+
+  <div style="padding: 28px 64px 0; display: flex; justify-content: space-between; align-items: flex-start;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 12px; color: #F26A21; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Family Friendly</div>
+      <h1 style="font-size: 36px;">Manali &amp; Solang Valley — 4N/5D</h1>
+      <div style="font-size: 15px; color: #6B7570;">4 Nights · 5 Days · Manali, Himachal Pradesh</div>
+    </div>
+    <div style="text-align: right;">
+      <div style="font-size: 13px; color: #6B7570;">Starting from</div>
+      <div style="font-size: 30px; font-weight: 600; color: #1B3A66;">₹14,999</div>
+      <div style="font-size: 12px; color: #6B7570;">per person, twin sharing</div>
+    </div>
+  </div>
+
+  <div style="padding: 40px 64px 72px; display: grid; grid-template-columns: 2fr 1fr; gap: 48px;">
+
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <h2 style="font-size: 22px;">Overview</h2>
+        <div style="font-size: 15px; line-height: 1.7; color: #3B443F;">Experience the best of Manali and Solang Valley on this 5-day escape — snow-capped views, adventure activities, and comfortable stays, all planned for a stress-free family holiday.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 22px;">Itinerary</h2>
+        <sc-for list="{{itinerary}}" as="day" hint-placeholder-count="5">
+          <div style="display: flex; gap: 20px; border-bottom: 1px solid #E4DFD3; padding-bottom: 20px;">
+            <div style="width: 88px; flex-shrink: 0; font-size: 14px; font-weight: 600; color: #1B3A66;">Day {{day.number}}</div>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <div style="font-size: 16px; font-weight: 600;">{{day.title}}</div>
+              <div style="font-size: 14px; color: #6B7570; line-height: 1.6;">{{day.desc}}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="font-size: 20px;">Included</h2>
+          <sc-for list="{{included}}" as="i" hint-placeholder-count="5">
+            <div style="font-size: 14px; color: #3B443F; display: flex; gap: 8px;"><span style="color: #1B3A66;">✓</span>{{i}}</div>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <h2 style="font-size: 20px;">Excluded</h2>
+          <sc-for list="{{excluded}}" as="e" hint-placeholder-count="4">
+            <div style="font-size: 14px; color: #3B443F; display: flex; gap: 8px;"><span style="color: #F26A21;">✕</span>{{e}}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 22px;">FAQs</h2>
+        <sc-for list="{{faqs}}" as="f" hint-placeholder-count="3">
+          <div style="border-bottom: 1px solid #E4DFD3; padding-bottom: 16px; display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 15px; font-weight: 600;">{{f.q}}</div>
+            <div style="font-size: 14px; color: #6B7570;">{{f.a}}</div>
+          </div>
+        </sc-for>
+      </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 20px;">
+        <div>
+          <div style="font-size: 13px; color: #6B7570;">Starting from</div>
+          <div style="font-size: 26px; font-weight: 600; color: #1B3A66;">₹14,999 <span style="font-size: 14px; font-weight: 400; color: #6B7570;">/ person</span></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="text" placeholder="Preferred travel date" style="border: 1px solid #E4DFD3; border-radius: 8px; padding: 12px 14px; font-size: 14px;">
+          <input type="text" placeholder="Number of travellers" style="border: 1px solid #E4DFD3; border-radius: 8px; padding: 12px 14px; font-size: 14px;">
+        </div>
+        <button style="background: #1B3A66; color: #fff; border: none; border-radius: 999px; padding: 14px; font-size: 15px; font-weight: 600;">Enquire Now</button>
+        <button style="background: #FFFFFF; color: #1C2521; border: 1px solid #E4DFD3; border-radius: 999px; padding: 14px; font-size: 15px; font-weight: 600;">Call Us: +91 98765 43210</button>
+        <button style="background: #25D366; color: #fff; border: none; border-radius: 999px; padding: 14px; font-size: 15px; font-weight: 600;">WhatsApp Us</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":1980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      itinerary: [
+        { number: 1, title: 'Arrival in Manali', desc: 'Check in to your hotel, evening at leisure on Mall Road.' },
+        { number: 2, title: 'Solang Valley Adventure', desc: 'Full-day trip to Solang Valley for paragliding and zorbing (optional activities).' },
+        { number: 3, title: 'Local Sightseeing', desc: 'Visit Hadimba Temple, Old Manali, and Vashisht hot springs.' },
+        { number: 4, title: 'Leisure Day', desc: 'Free day for cafe hopping or an optional Rohtang Pass excursion.' },
+        { number: 5, title: 'Departure', desc: 'Check out and transfer to Bhuntar airport / Manali bus stand.' },
+      ],
+      included: ['4 nights hotel stay', 'Daily breakfast & dinner', 'Airport / bus stand transfers', 'Solang Valley sightseeing', 'All applicable taxes'],
+      excluded: ['Adventure activity charges', 'Lunch', 'Personal expenses', 'Anything not mentioned in inclusions'],
+      faqs: [
+        { q: 'Is this package customisable?', a: 'Yes, dates, hotel category and add-on activities can all be adjusted.' },
+        { q: 'What is the cancellation policy?', a: 'Full refund up to 7 days before travel; details shared upon booking.' },
+        { q: 'Are flights included?', a: 'No, this package covers only ground stay and transfers.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

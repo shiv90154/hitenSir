@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Work Sans', sans-serif; color: #1C2521; }
+    h1, h2, h3 { font-family: 'Fraunces', serif; margin: 0; }
+    a { color: #1B3A66; text-decoration: none; }
+    .ph {
+      background: #E7E2D4; border: 1px solid #D8D1BE; color: #8A8271;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; text-align: center;
+    }
+  
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .marquee-wrap { overflow: hidden; }
+    .marquee-track { display: flex; width: max-content; gap: 56px; animation: marquee 24s linear infinite; }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .card-anim { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-anim:hover { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(20,33,61,0.14); }
+    button { transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease; }
+    button:hover { transform: translateY(-2px); filter: brightness(1.06); }
+    a { transition: color 0.15s ease; }
+</style>
+</helmet>
+<div style="width: 1440px; background: #F7F4EC; display: flex; flex-direction: column;">
+
+  <div style="height: 88px; display: flex; align-items: center; justify-content: space-between; padding: 0 64px; background: #FFFFFF; border-bottom: 1px solid #E4DFD3;">
+    <img src="/_blob/4c2ef46de2c0671cf64f9221f6570db7" alt="BharatTrip" style="height: 52px; width: auto; display: block;">
+    <div style="display: flex; gap: 32px; font-size: 15px; color: #3B443F;">
+      <a href="#">Destinations</a><a href="#">Places</a><a href="#">Packages</a><a href="#">Things To Do</a><a href="#">Blog</a><a href="#">Contact</a>
+    </div>
+    <button style="background: #F26A21; color: #fff; border: none; border-radius: 999px; padding: 12px 24px; font-size: 14px; font-weight: 600;">Enquire Now</button>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div style="padding: 20px 64px 0; font-size: 13px; color: #6B7570;">Home / Destinations / <span style="color: #1C2521; font-weight: 600;">Manali</span></div>
+
+  <!-- Hero -->
+  <div class="ph" style="margin: 20px 64px 0; height: 420px; border-radius: 16px;">[Cover Photo — Manali, Himachal Pradesh]</div>
+
+  <!-- Title row -->
+  <div style="padding: 28px 64px 0; display: flex; justify-content: space-between; align-items: flex-end;">
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <h1 style="font-size: 42px;">Manali</h1>
+      <div style="font-size: 15px; color: #6B7570;">Kullu District, Himachal Pradesh, India</div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 999px; padding: 12px 22px; font-size: 14px; font-weight: 600;">☆ Save</button>
+      <button style="background: #1B3A66; color: #fff; border: none; border-radius: 999px; padding: 12px 22px; font-size: 14px; font-weight: 600;">Enquire About Manali</button>
+    </div>
+  </div>
+
+  <!-- Body: main + sidebar -->
+  <div style="padding: 40px 64px 72px; display: grid; grid-template-columns: 2fr 1fr; gap: 48px;">
+
+    <div style="display: flex; flex-direction: column; gap: 40px;">
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <h2 style="font-size: 24px;">About Manali</h2>
+        <div style="font-size: 15px; line-height: 1.7; color: #3B443F;">Nestled in the Kullu Valley on the banks of the Beas River, Manali is Himachal Pradesh's most-loved hill town — a gateway to snow-capped peaks, alpine meadows and adventure sports, framed by deodar forests on every side.</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 24px;">Places to Visit</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+          <sc-for list="{{places}}" as="p" hint-placeholder-count="6">
+            <div class="card-anim" style="border: 1px solid #E4DFD3; border-radius: 12px; overflow: hidden; background: #fff;">
+              <div class="ph" style="height: 120px;">{{p.label}}</div>
+              <div style="padding: 12px 14px; font-size: 14px; font-weight: 600;">{{p.name}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 24px;">Things To Do in Manali</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <sc-for list="{{activities}}" as="a" hint-placeholder-count="6">
+            <div style="background: #fff; border: 1px solid #E4DFD3; border-radius: 999px; padding: 10px 18px; font-size: 14px;">{{a}}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 24px;">Manali Travel Packages</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;">
+          <sc-for list="{{packages}}" as="pk" hint-placeholder-count="2">
+            <div class="card-anim" style="border: 1px solid #E4DFD3; border-radius: 12px; overflow: hidden; background: #fff; display: flex;">
+              <div class="ph" style="width: 160px; flex-shrink: 0;">{{pk.label}}</div>
+              <div style="padding: 16px; display: flex; flex-direction: column; gap: 6px; justify-content: center;">
+                <div style="font-size: 15px; font-weight: 600;">{{pk.name}}</div>
+                <div style="font-size: 13px; color: #6B7570;">{{pk.duration}}</div>
+                <div style="font-size: 15px; font-weight: 600; color: #1B3A66;">{{pk.price}}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 24px;">Related Blogs &amp; Guides</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;">
+          <sc-for list="{{blogs}}" as="b" hint-placeholder-count="3">
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div class="ph" style="height: 110px; border-radius: 10px;">{{b.label}}</div>
+              <div style="font-size: 14px; font-weight: 600; line-height: 1.4;">{{b.title}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <h2 style="font-size: 24px;">Gallery</h2>
+        <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;">
+          <sc-for list="{{gallery}}" as="g" hint-placeholder-count="4">
+            <div class="ph" style="height: 100px; border-radius: 8px;">{{g}}</div>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+        <h3 style="font-size: 17px;">Quick Facts</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+          <div style="display: flex; justify-content: space-between;"><span style="color: #6B7570;">Best time to visit</span><span style="font-weight: 600;">Mar – Jun, Oct – Feb</span></div>
+          <div style="display: flex; justify-content: space-between;"><span style="color: #6B7570;">Altitude</span><span style="font-weight: 600;">2,050 m</span></div>
+          <div style="display: flex; justify-content: space-between;"><span style="color: #6B7570;">Nearest airport</span><span style="font-weight: 600;">Bhuntar (KUU)</span></div>
+          <div style="display: flex; justify-content: space-between;"><span style="color: #6B7570;">Ideal stay</span><span style="font-weight: 600;">3 – 4 days</span></div>
+        </div>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+        <h3 style="font-size: 17px;">How to Reach</h3>
+        <div style="font-size: 14px; line-height: 1.6; color: #3B443F;">By air to Bhuntar, by rail to Joginder Nagar, or a scenic 10-hour drive from Delhi via Chandigarh.</div>
+      </div>
+      <div style="background: #14213D; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 16px; font-weight: 600; color: #FFFFFF;">Planning a trip to Manali?</div>
+        <div style="font-size: 13px; color: #CBD3CE;">Send an enquiry and our team will get back within a day.</div>
+        <button style="background: #F26A21; color: #fff; border: none; border-radius: 999px; padding: 12px 20px; font-size: 14px; font-weight: 600;">Enquire Now</button>
+        <button style="background: transparent; color: #fff; border: 1px solid #445048; border-radius: 999px; padding: 12px 20px; font-size: 14px; font-weight: 600;">WhatsApp Us</button>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #E4DFD3; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 12px;">
+        <h3 style="font-size: 17px;">Nearby Destinations</h3>
+        <sc-for list="{{nearby}}" as="n" hint-placeholder-count="3">
+          <a href="#" style="font-size: 14px;">{{n}}</a>
+        </sc-for>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":2560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      places: [
+        { name: 'Hadimba Temple', label: '[Place Photo]' },
+        { name: 'Solang Valley', label: '[Place Photo]' },
+        { name: 'Old Manali', label: '[Place Photo]' },
+        { name: 'Rohtang Pass', label: '[Place Photo]' },
+        { name: 'Vashisht Springs', label: '[Place Photo]' },
+        { name: 'Jogini Falls', label: '[Place Photo]' },
+      ],
+      activities: ['Paragliding', 'River Rafting', 'Trekking', 'Camping', 'Skiing (winter)', 'Cafe Hopping'],
+      packages: [
+        { name: 'Manali & Solang Valley — 4N/5D', duration: '4 Nights · 5 Days', price: 'From ₹14,999', label: '[Photo]' },
+        { name: 'Manali Honeymoon Special — 3N/4D', duration: '3 Nights · 4 Days', price: 'From ₹18,499', label: '[Photo]' },
+      ],
+      blogs: [
+        { title: 'A Weekend in Manali Under ₹8,000', label: '[Photo]' },
+        { title: 'Best Cafes in Old Manali', label: '[Photo]' },
+        { title: 'Complete Manali Travel Guide', label: '[Photo]' },
+      ],
+      gallery: ['[Photo 1]', '[Photo 2]', '[Photo 3]', '[Photo 4]'],
+      nearby: ['Kasol — 75 km', 'Solang Valley — 14 km', 'Kullu — 40 km'],
+    };
+  }
+}
+</script>
+</body>
+</html>

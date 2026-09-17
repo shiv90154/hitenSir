@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Work Sans', sans-serif; color: #1C2521; }
+    a { color: #1B3A66; text-decoration: none; }
+  
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .marquee-wrap { overflow: hidden; }
+    .marquee-track { display: flex; width: max-content; gap: 56px; animation: marquee 24s linear infinite; }
+    .fade-up { animation: fadeUp 0.7s ease both; }
+    .card-anim { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .card-anim:hover { transform: translateY(-6px); box-shadow: 0 18px 34px rgba(20,33,61,0.14); }
+    button { transition: transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease; }
+    button:hover { transform: translateY(-2px); filter: brightness(1.06); }
+    a { transition: color 0.15s ease; }
+</style>
+</helmet>
+<div style="width: 1440px; height: 900px; background: #F3F5F3; display: flex;">
+
+  <!-- Sidebar -->
+  <div style="width: 240px; flex-shrink: 0; background: #14213D; color: #C9CFCB; display: flex; flex-direction: column; padding: 24px 0;">
+    <div style="padding: 0 24px 24px; border-bottom: 1px solid #253028; display: flex; flex-direction: column; gap: 10px;"><div style="background: #FFFFFF; border-radius: 8px; padding: 6px 10px; display: inline-flex; width: fit-content;"><img src="/_blob/4c2ef46de2c0671cf64f9221f6570db7" alt="BharatTrip" style="height: 32px; width: auto; display: block;"></div><span style="font-size: 12px; color: #7C867F; font-weight: 400;">Admin Panel</span></div>
+    <div style="padding: 20px 12px; display: flex; flex-direction: column; gap: 2px; font-size: 14px;">
+      <div style="padding: 10px 12px; border-radius: 8px; background: #1B3A66; color: #FFFFFF; font-weight: 600;">Dashboard</div>
+      <div style="padding: 14px 12px 4px; font-size: 11px; color: #7C867F; text-transform: uppercase; letter-spacing: 0.06em;">Content</div>
+      <sc-for list="{{contentNav}}" as="c" hint-placeholder-count="7">
+        <div style="padding: 10px 12px; border-radius: 8px;">{{c}}</div>
+      </sc-for>
+      <div style="padding: 14px 12px 4px; font-size: 11px; color: #7C867F; text-transform: uppercase; letter-spacing: 0.06em;">Media</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">Media Library</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">Galleries</div>
+      <div style="padding: 14px 12px 4px; font-size: 11px; color: #7C867F; text-transform: uppercase; letter-spacing: 0.06em;">Website</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">Homepage</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">Navigation</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">FAQs &amp; Testimonials</div>
+      <div style="padding: 14px 12px 4px; font-size: 11px; color: #7C867F; text-transform: uppercase; letter-spacing: 0.06em;">Leads</div>
+      <div style="padding: 10px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">Enquiries <span style="background: #F26A21; color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 999px;">6</span></div>
+      <div style="padding: 14px 12px 4px; font-size: 11px; color: #7C867F; text-transform: uppercase; letter-spacing: 0.06em;">SEO &amp; Settings</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">Global SEO</div>
+      <div style="padding: 10px 12px; border-radius: 8px;">Settings</div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div style="flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;">
+
+    <div style="height: 72px; flex-shrink: 0; background: #FFFFFF; border-bottom: 1px solid #E2E6E3; display: flex; align-items: center; justify-content: space-between; padding: 0 32px;">
+      <div style="font-size: 20px; font-weight: 600;">Dashboard</div>
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <input type="text" placeholder="Search content, enquiries..." style="width: 280px; padding: 9px 14px; border-radius: 8px; border: 1px solid #E2E6E3; font-size: 13px;">
+        <div style="width: 36px; height: 36px; border-radius: 999px; background: #E7E2D4;"></div>
+      </div>
+    </div>
+
+    <div style="flex-grow: 1; overflow: auto; padding: 28px 32px; display: flex; flex-direction: column; gap: 24px;">
+
+      <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px;">
+        <sc-for list="{{stats}}" as="s" hint-placeholder-count="5">
+          <div style="background: #FFFFFF; border: 1px solid #E2E6E3; border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 12px; color: #6B7570; text-transform: uppercase; letter-spacing: 0.04em;">{{s.label}}</div>
+            <div style="font-size: 26px; font-weight: 700;">{{s.value}}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 15px; font-weight: 600;">Recent Content</div>
+            <a href="#" style="font-size: 13px;">View all</a>
+          </div>
+          <sc-for list="{{recentContent}}" as="rc" hint-placeholder-count="5">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F0F2EF; font-size: 13px;">
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-weight: 600;">{{rc.title}}</div>
+                <div style="color: #8A9490; font-size: 12px;">{{rc.type}} · edited {{rc.time}}</div>
+              </div>
+              <div style="padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{rc.badgeBg}}; color: {{rc.badgeColor}};">{{rc.status}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background: #FFFFFF; border: 1px solid #E2E6E3; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 15px; font-weight: 600;">Recent Enquiries</div>
+            <a href="#" style="font-size: 13px;">View all</a>
+          </div>
+          <sc-for list="{{enquiries}}" as="en" hint-placeholder-count="5">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F0F2EF; font-size: 13px;">
+              <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-weight: 600;">{{en.name}}</div>
+                <div style="color: #8A9490; font-size: 12px;">{{en.interest}} · {{en.time}}</div>
+              </div>
+              <div style="padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; background: {{en.badgeBg}}; color: {{en.badgeColor}};">{{en.status}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      contentNav: ['Destinations', 'Places', 'Packages', 'Blogs', 'Travel Guides', 'Things To Do', 'Categories'],
+      stats: [
+        { label: 'Destinations', value: 24 },
+        { label: 'Packages', value: 36 },
+        { label: 'Blog Posts', value: 58 },
+        { label: 'Published', value: 142 },
+        { label: 'Drafts', value: 9 },
+      ],
+      recentContent: [
+        { title: 'Spiti Valley Road Trip — 6N/7D', type: 'Package', time: '2h ago', status: 'Published', badgeBg: '#E5F0EC', badgeColor: '#1B3A66' },
+        { title: 'A Weekend in Manali Under ₹8,000', type: 'Blog', time: '5h ago', status: 'Published', badgeBg: '#E5F0EC', badgeColor: '#1B3A66' },
+        { title: 'Bir Billing', type: 'Place', time: '1d ago', status: 'Draft', badgeBg: '#F3E9DE', badgeColor: '#F26A21' },
+        { title: 'Complete Shimla Travel Guide', type: 'Guide', time: '1d ago', status: 'Published', badgeBg: '#E5F0EC', badgeColor: '#1B3A66' },
+        { title: 'Winter Skiing in Narkanda', type: 'Activity', time: '2d ago', status: 'Draft', badgeBg: '#F3E9DE', badgeColor: '#F26A21' },
+      ],
+      enquiries: [
+        { name: 'Ritu Sharma', interest: 'Manali Package', time: '1h ago', status: 'New', badgeBg: '#F3E9DE', badgeColor: '#F26A21' },
+        { name: 'Arjun Mehta', interest: 'Spiti Road Trip', time: '4h ago', status: 'Contacted', badgeBg: '#EAEEF4', badgeColor: '#3D5A8A' },
+        { name: 'Priya Nair', interest: 'Shimla Package', time: '1d ago', status: 'In Progress', badgeBg: '#EAEEF4', badgeColor: '#3D5A8A' },
+        { name: 'Karan Thakur', interest: 'Kasol Getaway', time: '2d ago', status: 'Converted', badgeBg: '#E5F0EC', badgeColor: '#1B3A66' },
+        { name: 'Neha Verma', interest: 'Dharamshala Retreat', time: '3d ago', status: 'Closed', badgeBg: '#EFEFEF', badgeColor: '#6B7570' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

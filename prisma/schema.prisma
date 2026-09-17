@@ -1,0 +1,440 @@
+// BharatTrip database schema — Phase 3 of REQUIREMENTS.md
+// Relational PostgreSQL. Shared shapes: uuid id, created_at/updated_at,
+// status enum(draft, published), and an embedded seo Json field
+// (title, description, keywords, canonicalUrl, ogTitle, ogDescription,
+// ogImageId, twitterCard, robots) reused identically across content types.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+
+  @@map("content_status")
+}
+
+enum AdminRole {
+  ADMIN
+
+  @@map("admin_role")
+}
+
+enum ActivityDifficulty {
+  EASY
+  MODERATE
+  DIFFICULT
+
+  @@map("activity_difficulty")
+}
+
+enum BlogPostType {
+  ARTICLE
+  GUIDE
+
+  @@map("blog_post_type")
+}
+
+enum CategoryAppliesTo {
+  PACKAGE
+  BLOG
+  ACTIVITY
+
+  @@map("category_applies_to")
+}
+
+enum ContentType {
+  DESTINATION
+  PLACE
+  PACKAGE
+  ACTIVITY
+  BLOG
+  GALLERY
+
+  @@map("content_type")
+}
+
+enum RelationType {
+  RELATED
+  NEARBY
+
+  @@map("relation_type")
+}
+
+enum FaqContext {
+  GLOBAL
+  PACKAGE
+  DESTINATION
+  GUIDE
+
+  @@map("faq_context")
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  CONVERTED
+  CLOSED
+
+  @@map("enquiry_status")
+}
+
+model Admin {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique
+  passwordHash String    @map("password_hash")
+  name         String
+  role         AdminRole @default(ADMIN)
+  lastLoginAt  DateTime? @map("last_login_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  blogs Blog[]
+
+  @@map("admins")
+}
+
+model Destination {
+  id               String        @id @default(uuid()) @db.Uuid
+  name             String
+  slug             String        @unique
+  shortDescription String?       @map("short_description")
+  description      String?
+  coverImageId     String?       @map("cover_image_id") @db.Uuid
+  coverImage       Media?        @relation(fields: [coverImageId], references: [id])
+  state            String?
+  country          String        @default("India")
+  bestTimeToVisit  String?       @map("best_time_to_visit")
+  weather          Json?
+  howToReach       String?       @map("how_to_reach")
+  travelTips       String?       @map("travel_tips")
+  seo              Json?
+  status           ContentStatus @default(DRAFT)
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  places     Place[]
+  activities Activity[]
+  packages   Package[]
+  enquiries  Enquiry[]
+
+  @@index([status])
+  @@map("destinations")
+}
+
+model Place {
+  id              String        @id @default(uuid()) @db.Uuid
+  name            String
+  slug            String        @unique
+  description     String?
+  destinationId   String        @map("destination_id") @db.Uuid
+  destination     Destination   @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  lat             Decimal?      @db.Decimal(9, 6)
+  lng             Decimal?      @db.Decimal(9, 6)
+  openingHours    Json?         @map("opening_hours")
+  bestTimeToVisit String?       @map("best_time_to_visit")
+  seo             Json?
+  status          ContentStatus @default(DRAFT)
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  @@index([destinationId])
+  @@index([status])
+  @@map("places")
+}
+
+model Activity {
+  id            String              @id @default(uuid()) @db.Uuid
+  name          String
+  slug          String              @unique
+  description   String?
+  destinationId String              @map("destination_id") @db.Uuid
+  destination   Destination         @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  duration      String?
+  priceFrom     Decimal?            @map("price_from") @db.Decimal(10, 2)
+  difficulty    ActivityDifficulty?
+  bestSeason    String?             @map("best_season")
+  safetyInfo    String?             @map("safety_info")
+  seo           Json?
+  status        ContentStatus       @default(DRAFT)
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+
+  categories ActivityCategoryMap[]
+
+  @@index([destinationId])
+  @@index([status])
+  @@map("activities")
+}
+
+model Package {
+  id               String        @id @default(uuid()) @db.Uuid
+  name             String
+  slug             String        @unique
+  shortDescription String?       @map("short_description")
+  description      String?
+  duration         String?
+  priceFrom        Decimal?      @map("price_from") @db.Decimal(10, 2)
+  destinationId    String?       @map("destination_id") @db.Uuid
+  destination      Destination?  @relation(fields: [destinationId], references: [id])
+  included         Json?
+  excluded         Json?
+  highlights       Json?
+  faqs             Json?
+  seo              Json?
+  status           ContentStatus @default(DRAFT)
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+
+  itineraries PackageItinerary[]
+  categories  PackageCategoryMap[]
+  enquiries   Enquiry[]
+
+  @@index([destinationId])
+  @@index([status])
+  @@map("packages")
+}
+
+model PackageItinerary {
+  id          String  @id @default(uuid()) @db.Uuid
+  packageId   String  @map("package_id") @db.Uuid
+  package     Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  dayNumber   Int     @map("day_number")
+  title       String
+  description String?
+
+  @@index([packageId, dayNumber])
+  @@map("package_itineraries")
+}
+
+model Blog {
+  id              String        @id @default(uuid()) @db.Uuid
+  title           String
+  slug            String        @unique
+  postType        BlogPostType  @default(ARTICLE) @map("post_type")
+  body            String?
+  excerpt         String?
+  featuredImageId String?       @map("featured_image_id") @db.Uuid
+  featuredImage   Media?        @relation(fields: [featuredImageId], references: [id])
+  authorId        String?       @map("author_id") @db.Uuid
+  author          Admin?        @relation(fields: [authorId], references: [id])
+  readingTime     Int?          @map("reading_time")
+  publishedAt     DateTime?     @map("published_at")
+  seo             Json?
+  status          ContentStatus @default(DRAFT)
+  createdAt       DateTime      @default(now()) @map("created_at")
+  updatedAt       DateTime      @updatedAt @map("updated_at")
+
+  categories BlogCategoryMap[]
+  tags       BlogTagMap[]
+
+  @@index([status])
+  @@index([postType])
+  @@map("blogs")
+}
+
+model BlogCategory {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  blogs BlogCategoryMap[]
+
+  @@map("blog_categories")
+}
+
+model BlogTag {
+  id   String @id @default(uuid()) @db.Uuid
+  name String
+  slug String @unique
+
+  blogs BlogTagMap[]
+
+  @@map("blog_tags")
+}
+
+model BlogCategoryMap {
+  blogId     String       @map("blog_id") @db.Uuid
+  blog       Blog         @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  categoryId String       @map("category_id") @db.Uuid
+  category   BlogCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([blogId, categoryId])
+  @@map("blog_category_map")
+}
+
+model BlogTagMap {
+  blogId String  @map("blog_id") @db.Uuid
+  blog   Blog    @relation(fields: [blogId], references: [id], onDelete: Cascade)
+  tagId  String  @map("tag_id") @db.Uuid
+  tag    BlogTag @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([blogId, tagId])
+  @@map("blog_tag_map")
+}
+
+model Category {
+  id        String            @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String            @unique
+  appliesTo CategoryAppliesTo @map("applies_to")
+
+  packages   PackageCategoryMap[]
+  activities ActivityCategoryMap[]
+
+  @@map("categories")
+}
+
+// Category joins split per content type (each side of the pair is required,
+// which a single shared join table can't express with a composite id).
+model PackageCategoryMap {
+  categoryId String   @map("category_id") @db.Uuid
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  packageId  String   @map("package_id") @db.Uuid
+  package    Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@id([categoryId, packageId])
+  @@map("package_category_map")
+}
+
+model ActivityCategoryMap {
+  categoryId String   @map("category_id") @db.Uuid
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  activityId String   @map("activity_id") @db.Uuid
+  activity   Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@id([categoryId, activityId])
+  @@map("activity_category_map")
+}
+
+model Gallery {
+  id          String  @id @default(uuid()) @db.Uuid
+  title       String
+  slug        String  @unique
+  description String?
+
+  images GalleryImage[]
+
+  @@map("galleries")
+}
+
+model GalleryImage {
+  id         String  @id @default(uuid()) @db.Uuid
+  galleryId  String  @map("gallery_id") @db.Uuid
+  gallery    Gallery @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  mediaId    String  @map("media_id") @db.Uuid
+  media      Media   @relation(fields: [mediaId], references: [id])
+  sortOrder  Int     @default(0) @map("sort_order")
+  isFeatured Boolean @default(false) @map("is_featured")
+
+  @@index([galleryId])
+  @@map("gallery_images")
+}
+
+// Object-storage pointer + metadata only — never the file itself.
+model Media {
+  id          String   @id @default(uuid()) @db.Uuid
+  url         String
+  altText     String?  @map("alt_text")
+  title       String?
+  description String?
+  width       Int?
+  height      Int?
+  sizeBytes   Int?     @map("size_bytes")
+  mimeType    String?  @map("mime_type")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  destinations  Destination[]
+  blogs         Blog[]
+  galleryImages GalleryImage[]
+
+  @@map("media")
+}
+
+// Polymorphic relation table — replaces a per-pair join table between every
+// content type ("related content" / "nearby destinations").
+model ContentRelation {
+  id           String       @id @default(uuid()) @db.Uuid
+  fromType     ContentType  @map("from_type")
+  fromId       String       @map("from_id") @db.Uuid
+  toType       ContentType  @map("to_type")
+  toId         String       @map("to_id") @db.Uuid
+  relationType RelationType @default(RELATED) @map("relation_type")
+  sortOrder    Int          @default(0) @map("sort_order")
+
+  @@index([fromType, fromId])
+  @@map("content_relations")
+}
+
+model Faq {
+  id        String     @id @default(uuid()) @db.Uuid
+  question  String
+  answer    String
+  context   FaqContext @default(GLOBAL)
+  contextId String?    @map("context_id") @db.Uuid
+  sortOrder Int        @default(0) @map("sort_order")
+
+  @@index([context, contextId])
+  @@map("faqs")
+}
+
+model Testimonial {
+  id             String  @id @default(uuid()) @db.Uuid
+  authorName     String  @map("author_name")
+  authorLocation String? @map("author_location")
+  rating         Int     @default(5)
+  quote          String
+  avatarMediaId  String? @map("avatar_media_id") @db.Uuid
+  sortOrder      Int     @default(0) @map("sort_order")
+
+  @@map("testimonials")
+}
+
+model Enquiry {
+  id            String        @id @default(uuid()) @db.Uuid
+  name          String
+  email         String
+  phone         String?
+  destinationId String?       @map("destination_id") @db.Uuid
+  destination   Destination?  @relation(fields: [destinationId], references: [id])
+  packageId     String?       @map("package_id") @db.Uuid
+  package       Package?      @relation(fields: [packageId], references: [id])
+  travelDate    DateTime?     @map("travel_date")
+  peopleCount   Int?          @map("people_count")
+  message       String?
+  status        EnquiryStatus @default(NEW)
+  adminNotes    String?       @map("admin_notes")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  @@index([status, createdAt])
+  @@map("enquiries")
+}
+
+model NavigationItem {
+  id        String           @id @default(uuid()) @db.Uuid
+  label     String
+  url       String
+  sortOrder Int              @default(0) @map("sort_order")
+  parentId  String?          @map("parent_id") @db.Uuid
+  parent    NavigationItem?  @relation("NavigationHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  NavigationItem[] @relation("NavigationHierarchy")
+
+  @@map("navigation_items")
+}
+
+// Single-row-per-key store: contact info, social links, homepage section
+// toggles, global SEO defaults.
+model WebsiteSetting {
+  key   String @id
+  value Json
+
+  @@map("website_settings")
+}
