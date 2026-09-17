@@ -1,23 +1,8 @@
 import type { NextConfig } from "next";
 
-const remotePatterns: NonNullable<NextConfig["images"]>["remotePatterns"] = [];
-
-if (process.env.STORAGE_PUBLIC_URL) {
-  try {
-    const url = new URL(process.env.STORAGE_PUBLIC_URL);
-    remotePatterns.push({
-      protocol: url.protocol.replace(":", "") as "http" | "https",
-      hostname: url.hostname,
-      pathname: "/**",
-    });
-  } catch {
-    // Invalid STORAGE_PUBLIC_URL — leave remotePatterns empty; local uploads
-    // still work since they're served from /public.
-  }
-}
-
-const nextConfig: NextConfig = {
-  images: { remotePatterns },
-};
+// All media is uploaded to and served from this server's own /public/uploads
+// directory (see lib/media/storage.ts), so next/image never needs an
+// external remotePatterns entry.
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

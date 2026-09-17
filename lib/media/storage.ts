@@ -1,6 +1,6 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
-import { writeFile } from "node:fs/promises";
+import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 export interface UploadResult {
@@ -8,68 +8,45 @@ export interface UploadResult {
   key: string;
 }
 
+const UPLOADS_DIR = path.join(process.cwd(), "public", "uploads");
+
 function randomKey(extension: string): string {
   return `${randomBytes(16).toString("hex")}${extension}`;
 }
 
 /**
- * S3-compatible (Cloudflare R2 / AWS S3) upload, used whenever storage
- * credentials are configured. See REQUIREMENTS.md Phase 8/9.
+ * All uploaded media is stored directly on this server's own disk, under
+ * public/uploads — no external object storage (S3/R2/Cloudinary) involved.
+ * Files are served straight from Next.js's static /public handling.
  */
-async function uploadToS3(buffer: Buffer, extension: string, contentType: string): Promise<UploadResult> {
-  const { S3Client, PutObjectCommand } = await import("@aws-sdk/client-s3");
-
-  const client = new S3Client({
-    region: process.env.STORAGE_REGION || "auto",
-    endpoint: process.env.STORAGE_ENDPOINT,
-    credentials: {
-      accessKeyId: process.env.STORAGE_ACCESS_KEY_ID!,
-      secretAccessKey: process.env.STORAGE_SECRET_ACCESS_KEY!,
-    },
-  });
-
-  const key = `media/${randomKey(extension)}`;
-
-  await client.send(
-    new PutObjectCommand({
-      Bucket: process.env.STORAGE_BUCKET,
-      Key: key,
-      Body: buffer,
-      ContentType: contentType,
-    })
-  );
-
-  const publicBase = process.env.STORAGE_PUBLIC_URL?.replace(/\/$/, "");
-  return { url: `${publicBase}/${key}`, key };
-}
-
-/**
- * Local-disk fallback for development when no object storage is
- * configured — never used in production (Phase 8 requires object storage).
- */
-async function uploadToLocalDisk(buffer: Buffer, extension: string): Promise<UploadResult> {
+export async function uploadImage(buffer: Buffer, extension: string): Promise<UploadResult> {
   const key = randomKey(extension);
-  const filePath = path.join(process.cwd(), "public", "uploads", key);
-  await writeFile(filePath, buffer);
+  await mkdir(UPLOADS_DIR, { recursive: true });
+  await writeFile(path.join(UPLOADS_DIR, key), buffer);
   return { url: `/uploads/${key}`, key };
 }
 
-export function isObjectStorageConfigured(): boolean {
-  return Boolean(
-    process.env.STORAGE_BUCKET &&
-      process.env.STORAGE_ACCESS_KEY_ID &&
-      process.env.STORAGE_SECRET_ACCESS_KEY &&
-      process.env.STORAGE_PUBLIC_URL
-  );
-}
+/**
+ * Removes a previously-uploaded file from disk given its public URL
+ * (e.g. "/uploads/ab12...jpg"). Called when a media record is deleted, so
+ * files don't pile up on disk indefinitely. Safe to call on a URL that
+ * doesn't point at a local upload (e.g. leftover data from before this
+ * storage mode) — it's just a no-op in that case.
+ */
+export async function deleteImageByUrl(url: string): Promise<void> {
+  if (!url.startsWith("/uploads/")) return;
 
-export async function uploadImage(
-  buffer: Buffer,
-  extension: string,
-  contentType: string
-): Promise<UploadResult> {
-  if (isObjectStorageConfigured()) {
-    return uploadToS3(buffer, extension, contentType);
+  const key = url.slice("/uploads/".length);
+  // Guard against path traversal — a key should never contain a path separator.
+  if (!key || key.includes("/") || key.includes("\\") || key.includes("..")) return;
+
+  try {
+    await unlink(path.join(UPLOADS_DIR, key));
+  } catch (error) {
+    // Already gone, or a permissions issue — deleting the DB record should
+    // still proceed either way, so this is intentionally swallowed.
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+      console.error(`Failed to delete uploaded file for ${url}:`, error);
+    }
   }
-  return uploadToLocalDisk(buffer, extension);
 }

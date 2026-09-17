@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import sharp from "sharp";
 import { prisma } from "@/lib/db/client";
 import { getCurrentAdmin } from "@/lib/auth/session";
-import { uploadImage } from "@/lib/media/storage";
+import { uploadImage, deleteImageByUrl } from "@/lib/media/storage";
 import { ALLOWED_MIME_TYPES, MAX_UPLOAD_BYTES } from "@/lib/validation/media";
 
 export interface MediaFormState {
@@ -45,7 +45,7 @@ export async function uploadMediaAction(
   const { width, height } = await image.metadata();
   const outputBuffer = await image.toBuffer();
 
-  const { url } = await uploadImage(outputBuffer, extension, file.type);
+  const { url } = await uploadImage(outputBuffer, extension);
 
   await prisma.media.create({
     data: {
@@ -67,7 +67,8 @@ export async function deleteMediaAction(id: string) {
   const admin = await getCurrentAdmin();
   if (!admin) redirect("/admin/login");
 
-  await prisma.media.delete({ where: { id } });
+  const media = await prisma.media.delete({ where: { id } });
+  await deleteImageByUrl(media.url);
   revalidatePath("/admin/media");
 }
 

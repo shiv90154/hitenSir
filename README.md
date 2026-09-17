@@ -19,9 +19,11 @@ real data, production build passing with zero type/lint errors):
   category tags), Blog & Travel Guides (shared table, categories/tags,
   reading-time estimate), Categories, Galleries
 - **Media library** — real upload pipeline: `sharp` re-encodes and strips
-  EXIF, stores to local disk in dev or S3/R2 when `STORAGE_*` env vars are
-  set (`lib/media/storage.ts`), with a cover-image picker wired into the
-  Destination form as the reuse pattern
+  EXIF, then stores the file directly on this server's own disk under
+  `public/uploads` (`lib/media/storage.ts`) — no external object storage
+  required. A visual thumbnail-grid picker (`MediaPicker`) is reused across
+  every content form's image fields, and deleting a media item removes the
+  file from disk too, not just the database row.
 - **Content relations** — polymorphic `content_relations` table with a
   working example (Nearby Destinations, admin-picked, shown on the public
   destination page)
@@ -42,9 +44,10 @@ Full admin sidebar (17 sections) and every public route were crawled
 authenticated/unauthenticated and confirmed returning 200 with real data.
 
 **Deliberately out of scope for this pass** (call these out if you pick the
-project back up): admin roles beyond a single Admin, a visual drag-and-drop
-media picker (current one is a `<select>`), Sentry/error-monitoring wiring,
-and the "related content" side of `content_relations` beyond the Nearby
+project back up): admin roles beyond a single Admin, drag-to-reorder in the
+media picker (it's a click-to-select thumbnail grid, not drag-and-drop),
+Sentry/error-monitoring wiring, and the "related content" side of
+`content_relations` beyond the Nearby
 Destinations example — the pattern is proven and easy to extend to
 Package/Blog/Guide pairs the same way.
 
@@ -83,10 +86,10 @@ Package/Blog/Guide pairs the same way.
 
    Public site: <http://localhost:3000> — Admin: <http://localhost:3000/admin/login>
 
-`.env.example` lists every environment variable. Object storage
-(`STORAGE_*`) and email (`RESEND_API_KEY`, `ENQUIRY_NOTIFY_EMAIL`) are
-optional in development — uploads fall back to local disk and enquiry
-emails are silently skipped when unset.
+`.env.example` lists every environment variable. Uploaded media is always
+stored on this server's own disk under `public/uploads` — no object storage
+account needed. Email (`RESEND_API_KEY`, `ENQUIRY_NOTIFY_EMAIL`) is optional;
+enquiry notification emails are silently skipped when unset.
 
 ## Reference docs
 

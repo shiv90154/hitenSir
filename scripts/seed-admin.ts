@@ -1,6 +1,9 @@
-// One-time script to create the first admin account.
-// Usage: npm run seed:admin -- --email you@example.com --password "change-me" --name "Admin"
-// Disable or remove this script once the first account exists (Phase 9 checklist).
+// Creates the admin account from ADMIN_EMAIL/ADMIN_PASSWORD/ADMIN_NAME in
+// .env, or updates that admin's password/name if the account already
+// exists — so .env stays the single source of truth for admin login and
+// this script is always safe to re-run after changing it.
+// Usage: npm run seed:admin
+//   (or override just this once: npm run seed:admin -- --email you@example.com --password "change-me" --name "Admin")
 import bcrypt from "bcryptjs";
 import { prisma } from "../lib/db/client";
 
@@ -16,7 +19,7 @@ async function main() {
 
   if (!email || !password) {
     console.error(
-      "Usage: npm run seed:admin -- --email you@example.com --password \"change-me\" [--name \"Admin\"]"
+      "Set ADMIN_EMAIL and ADMIN_PASSWORD in .env, or pass --email/--password directly."
     );
     process.exit(1);
   }
@@ -26,17 +29,21 @@ async function main() {
     process.exit(1);
   }
 
+  const passwordHash = await bcrypt.hash(password, 12);
+
   const existing = await prisma.admin.findUnique({ where: { email } });
   if (existing) {
-    console.error(`An admin with email ${email} already exists.`);
-    process.exit(1);
+    const admin = await prisma.admin.update({
+      where: { email },
+      data: { passwordHash, name },
+    });
+    console.log(`Updated admin ${admin.email} (${admin.id}) — password set to the value in .env.`);
+    return;
   }
 
-  const passwordHash = await bcrypt.hash(password, 12);
   const admin = await prisma.admin.create({
     data: { email, passwordHash, name },
   });
-
   console.log(`Created admin ${admin.email} (${admin.id}).`);
 }
 
