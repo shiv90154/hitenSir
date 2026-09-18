@@ -46,6 +46,13 @@ export function LoginForm() {
       >
         {isPending ? "Signing in…" : "Sign in"}
       </button>
+
+      <p className="text-center text-xs text-ink-soft">
+        Lost your password? Reset it with{" "}
+        <code className="rounded bg-admin-surface px-1 py-0.5">npm run seed:admin</code> after setting a
+        new one in <code className="rounded bg-admin-surface px-1 py-0.5">ADMIN_PASSWORD</code> in{" "}
+        <code className="rounded bg-admin-surface px-1 py-0.5">.env</code>.
+      </p>
     </form>
   );
 }

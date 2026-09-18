@@ -6,6 +6,7 @@ import {
   type HomepageSettingsFormState,
 } from "@/lib/db/homepage-settings-actions";
 import type { HomepageSections } from "@/lib/db/homepage-settings";
+import { SavedNotice } from "@/components/admin/SavedNotice";
 
 const initialState: HomepageSettingsFormState = {};
 
@@ -36,7 +37,7 @@ export function HomepageSectionsForm({ sections }: { sections: HomepageSections 
         </label>
       ))}
 
-      {state.success && <p className="text-sm text-navy">Saved.</p>}
+      <SavedNotice state={state} />
 
       <button
         type="submit"

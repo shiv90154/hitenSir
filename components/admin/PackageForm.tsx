@@ -6,6 +6,7 @@ import type { PackageFormState } from "@/lib/db/packages-actions";
 import { slugify } from "@/lib/validation/slug";
 import { Field, inputClass } from "@/components/admin/FormField";
 import { ItineraryEditor } from "@/components/admin/ItineraryEditor";
+import { MultiImagePicker, type MultiImageOption } from "@/components/admin/MultiImagePicker";
 
 type Action = (prevState: PackageFormState, formData: FormData) => Promise<PackageFormState>;
 
@@ -14,6 +15,7 @@ interface PackageFormProps {
   submitLabel: string;
   destinations: { id: string; name: string }[];
   categories: { id: string; name: string }[];
+  media: MultiImageOption[];
   defaultValues?: {
     name?: string;
     slug?: string;
@@ -27,6 +29,7 @@ interface PackageFormProps {
     highlights?: unknown;
     status?: string;
     categoryIds?: string[];
+    imageIds?: string[];
     itineraries?: { dayNumber: number; title: string; description: string | null }[];
   };
 }
@@ -43,6 +46,7 @@ export function PackageForm({
   submitLabel,
   destinations,
   categories,
+  media,
   defaultValues,
 }: PackageFormProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
@@ -150,6 +154,13 @@ export function PackageForm({
           </div>
         </Field>
       )}
+
+      <Field label="Photos" error={errors.imageIds}>
+        <MultiImagePicker name="imageIds" media={media} defaultValue={defaultValues?.imageIds} />
+        <p className="mt-2 text-xs text-ink-soft">
+          The first photo selected is used as the large cover photo; the rest appear alongside it.
+        </p>
+      </Field>
 
       <Field label="Highlights (one per line)" error={errors.highlights}>
         <textarea

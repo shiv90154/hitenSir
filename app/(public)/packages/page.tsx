@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { listPublished } from "@/lib/db/packages";
 import { PackageCard } from "@/components/public/PackageCard";
+import { resolveCoverImageUrls } from "@/lib/db/resolve-media";
 
 export const metadata: Metadata = {
   title: "Packages",
@@ -11,6 +12,7 @@ export const revalidate = 3600;
 
 export default async function PackagesPage() {
   const packages = await listPublished();
+  const coverImages = await resolveCoverImageUrls(packages);
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-16 lg:px-16">
@@ -31,6 +33,7 @@ export default async function PackagesPage() {
               duration={pkg.duration}
               destinationName={pkg.destination?.name}
               priceFrom={pkg.priceFrom?.toString()}
+              coverImageUrl={coverImages.get(pkg.id)}
             />
           ))}
         </div>

@@ -36,6 +36,7 @@ export const packageSchema = z.object({
   highlights: z.string().optional().default("").transform(linesToArray),
   status: z.enum(["DRAFT", "PUBLISHED"]),
   categoryIds: z.array(z.string().uuid()).default([]),
+  imageIds: z.array(z.string().uuid()).default([]),
   itineraries: z
     .array(
       z.object({

@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { updateSiteSettingsAction, type SettingsFormState } from "@/lib/db/settings-actions";
 import type { SiteSettings } from "@/lib/db/settings";
 import { Field, inputClass } from "@/components/admin/FormField";
+import { SavedNotice } from "@/components/admin/SavedNotice";
 
 const initialState: SettingsFormState = {};
 
@@ -63,7 +64,7 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </section>
 
-      {state.success && <p className="text-sm text-navy">Saved.</p>}
+      <SavedNotice state={state} />
       {state.error && <p className="text-sm text-orange">{state.error}</p>}
 
       <button

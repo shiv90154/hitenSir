@@ -3,12 +3,16 @@ import { createPackageAction } from "@/lib/db/packages-actions";
 import { prisma } from "@/lib/db/client";
 
 export default async function NewPackagePage() {
-  const [destinations, categories] = await Promise.all([
+  const [destinations, categories, media] = await Promise.all([
     prisma.destination.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } }),
     prisma.category.findMany({
       where: { appliesTo: "PACKAGE" },
       select: { id: true, name: true },
       orderBy: { name: "asc" },
+    }),
+    prisma.media.findMany({
+      select: { id: true, url: true, altText: true },
+      orderBy: { createdAt: "desc" },
     }),
   ]);
 
@@ -20,6 +24,7 @@ export default async function NewPackagePage() {
         submitLabel="Create Package"
         destinations={destinations}
         categories={categories}
+        media={media}
       />
     </div>
   );

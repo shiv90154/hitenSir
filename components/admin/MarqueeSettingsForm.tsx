@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { updateMarqueeSettingsAction, type MarqueeSettingsFormState } from "@/lib/db/marquee-settings-actions";
 import type { MarqueeSettings } from "@/lib/db/marquee-settings";
 import { Field, inputClass } from "@/components/admin/FormField";
+import { SavedNotice } from "@/components/admin/SavedNotice";
 
 const initialState: MarqueeSettingsFormState = {};
 
@@ -39,7 +40,7 @@ export function MarqueeSettingsForm({ marquee }: { marquee: MarqueeSettings }) {
         </select>
       </Field>
 
-      {state.success && <p className="text-sm text-navy">Saved.</p>}
+      <SavedNotice state={state} />
       {state.error && <p className="text-sm text-orange">{state.error}</p>}
 
       <button

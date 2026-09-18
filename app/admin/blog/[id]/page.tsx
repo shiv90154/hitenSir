@@ -10,12 +10,14 @@ export default async function EditBlogPostPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [post, media] = await Promise.all([
+  const [post, media, categories, tags] = await Promise.all([
     getById(id),
     prisma.media.findMany({
       select: { id: true, url: true, altText: true, title: true },
       orderBy: { createdAt: "desc" },
     }),
+    prisma.blogCategory.findMany({ select: { name: true }, orderBy: { name: "asc" } }),
+    prisma.blogTag.findMany({ select: { name: true }, orderBy: { name: "asc" } }),
   ]);
   if (!post) notFound();
 
@@ -30,6 +32,8 @@ export default async function EditBlogPostPage({
         postType="ARTICLE"
         media={media}
         cancelHref="/admin/blog"
+        existingCategories={categories.map((c) => c.name)}
+        existingTags={tags.map((t) => t.name)}
         defaultValues={post}
       />
     </div>

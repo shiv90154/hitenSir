@@ -2,10 +2,10 @@
 
 import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import type { GalleryFormState } from "@/lib/db/galleries-actions";
 import { slugify } from "@/lib/validation/slug";
 import { Field, inputClass } from "@/components/admin/FormField";
+import { MultiImagePicker } from "@/components/admin/MultiImagePicker";
 
 type Action = (prevState: GalleryFormState, formData: FormData) => Promise<GalleryFormState>;
 
@@ -74,28 +74,7 @@ export function GalleryForm({ action, submitLabel, media, defaultValues }: Galle
       </Field>
 
       <Field label="Images" error={errors.mediaIds}>
-        {media.length === 0 ? (
-          <p className="mt-1 text-sm text-ink-soft">
-            No media uploaded yet — add some in the Media Library first.
-          </p>
-        ) : (
-          <div className="mt-1 grid grid-cols-3 gap-3 sm:grid-cols-4">
-            {media.map((item) => (
-              <label key={item.id} className="relative block cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="mediaIds"
-                  value={item.id}
-                  defaultChecked={defaultValues?.mediaIds?.includes(item.id)}
-                  className="peer absolute right-1 top-1 z-10 h-4 w-4"
-                />
-                <div className="relative h-20 w-full overflow-hidden rounded-md border border-border bg-placeholder peer-checked:ring-2 peer-checked:ring-navy">
-                  <Image src={item.url} alt={item.altText ?? ""} fill className="object-cover" />
-                </div>
-              </label>
-            ))}
-          </div>
-        )}
+        <MultiImagePicker name="mediaIds" media={media} defaultValue={defaultValues?.mediaIds} />
       </Field>
 
       {state.error && <p className="text-sm text-orange">{state.error}</p>}

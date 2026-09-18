@@ -10,7 +10,7 @@ export default async function EditPackagePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [pkg, destinations, categories] = await Promise.all([
+  const [pkg, destinations, categories, media] = await Promise.all([
     getById(id),
     prisma.destination.findMany({ select: { id: true, name: true }, orderBy: { name: "asc" } }),
     prisma.category.findMany({
@@ -18,11 +18,16 @@ export default async function EditPackagePage({
       select: { id: true, name: true },
       orderBy: { name: "asc" },
     }),
+    prisma.media.findMany({
+      select: { id: true, url: true, altText: true },
+      orderBy: { createdAt: "desc" },
+    }),
   ]);
 
   if (!pkg) notFound();
 
   const boundAction = updatePackageAction.bind(null, id);
+  const imageIds = Array.isArray(pkg.images) ? (pkg.images as string[]) : [];
 
   return (
     <div className="space-y-6">
@@ -32,10 +37,12 @@ export default async function EditPackagePage({
         submitLabel="Save Changes"
         destinations={destinations}
         categories={categories}
+        media={media}
         defaultValues={{
           ...pkg,
           priceFrom: pkg.priceFrom?.toString() ?? null,
           categoryIds: pkg.categories.map((c) => c.categoryId),
+          imageIds,
         }}
       />
     </div>

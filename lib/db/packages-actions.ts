@@ -36,6 +36,7 @@ function parseForm(formData: FormData) {
     highlights: formData.get("highlights"),
     status: formData.get("status"),
     categoryIds: formData.getAll("categoryIds"),
+    imageIds: formData.getAll("imageIds"),
     itineraries,
   });
 }
@@ -53,11 +54,12 @@ export async function createPackageAction(
   const existing = await prisma.package.findUnique({ where: { slug: parsed.data.slug } });
   if (existing) return { fieldErrors: { slug: "That slug is already in use" } };
 
-  const { categoryIds, itineraries, ...data } = parsed.data;
+  const { categoryIds, imageIds, itineraries, ...data } = parsed.data;
 
   await prisma.package.create({
     data: {
       ...data,
+      images: imageIds,
       itineraries: { create: itineraries },
       categories: { create: categoryIds.map((categoryId) => ({ categoryId })) },
     },
@@ -84,7 +86,7 @@ export async function updatePackageAction(
   });
   if (conflict) return { fieldErrors: { slug: "That slug is already in use" } };
 
-  const { categoryIds, itineraries, ...data } = parsed.data;
+  const { categoryIds, imageIds, itineraries, ...data } = parsed.data;
 
   await prisma.$transaction([
     prisma.packageItinerary.deleteMany({ where: { packageId: id } }),
@@ -93,6 +95,7 @@ export async function updatePackageAction(
       where: { id },
       data: {
         ...data,
+        images: imageIds,
         itineraries: { create: itineraries },
         categories: { create: categoryIds.map((categoryId) => ({ categoryId })) },
       },

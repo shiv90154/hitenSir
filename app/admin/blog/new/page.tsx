@@ -3,10 +3,14 @@ import { createBlogAction } from "@/lib/db/blogs-actions";
 import { prisma } from "@/lib/db/client";
 
 export default async function NewBlogPostPage() {
-  const media = await prisma.media.findMany({
-    select: { id: true, url: true, altText: true, title: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const [media, categories, tags] = await Promise.all([
+    prisma.media.findMany({
+      select: { id: true, url: true, altText: true, title: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.blogCategory.findMany({ select: { name: true }, orderBy: { name: "asc" } }),
+    prisma.blogTag.findMany({ select: { name: true }, orderBy: { name: "asc" } }),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -17,6 +21,8 @@ export default async function NewBlogPostPage() {
         postType="ARTICLE"
         media={media}
         cancelHref="/admin/blog"
+        existingCategories={categories.map((c) => c.name)}
+        existingTags={tags.map((t) => t.name)}
       />
     </div>
   );

@@ -6,6 +6,7 @@ import type { BlogFormState } from "@/lib/db/blogs-actions";
 import { slugify } from "@/lib/validation/slug";
 import { Field, inputClass } from "@/components/admin/FormField";
 import { MediaPicker, type MediaOption } from "@/components/admin/MediaPicker";
+import { TagInput } from "@/components/admin/TagInput";
 
 type Action = (prevState: BlogFormState, formData: FormData) => Promise<BlogFormState>;
 
@@ -15,6 +16,8 @@ interface BlogFormProps {
   postType: "ARTICLE" | "GUIDE";
   media: MediaOption[];
   cancelHref: string;
+  existingCategories: string[];
+  existingTags: string[];
   defaultValues?: {
     title?: string;
     slug?: string;
@@ -29,7 +32,16 @@ interface BlogFormProps {
 
 const initialState: BlogFormState = {};
 
-export function BlogForm({ action, submitLabel, postType, media, cancelHref, defaultValues }: BlogFormProps) {
+export function BlogForm({
+  action,
+  submitLabel,
+  postType,
+  media,
+  cancelHref,
+  existingCategories,
+  existingTags,
+  defaultValues,
+}: BlogFormProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
   const [slug, setSlug] = useState(defaultValues?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(Boolean(defaultValues?.slug));
@@ -94,18 +106,20 @@ export function BlogForm({ action, submitLabel, postType, media, cancelHref, def
       </Field>
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Categories (comma-separated)" error={errors.categories}>
-          <input
+        <Field label="Categories" error={errors.categories}>
+          <TagInput
             name="categories"
-            defaultValue={defaultValues?.categories?.map((c) => c.category.name).join(", ") ?? ""}
-            className={inputClass}
+            options={existingCategories}
+            defaultValue={defaultValues?.categories?.map((c) => c.category.name) ?? []}
+            placeholder="Type to search or add…"
           />
         </Field>
-        <Field label="Tags (comma-separated)" error={errors.tags}>
-          <input
+        <Field label="Tags" error={errors.tags}>
+          <TagInput
             name="tags"
-            defaultValue={defaultValues?.tags?.map((t) => t.tag.name).join(", ") ?? ""}
-            className={inputClass}
+            options={existingTags}
+            defaultValue={defaultValues?.tags?.map((t) => t.tag.name) ?? []}
+            placeholder="Type to search or add…"
           />
         </Field>
       </div>

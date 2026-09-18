@@ -12,6 +12,7 @@ import { Marquee } from "@/components/public/Marquee";
 import { getHomepageSections } from "@/lib/db/homepage-settings";
 import { getHeroSettings } from "@/lib/db/hero-settings";
 import { getMarqueeSettings } from "@/lib/db/marquee-settings";
+import { resolveCoverImageUrls } from "@/lib/db/resolve-media";
 
 const whyChooseUs = [
   { title: "Local Expertise", body: "Every itinerary is built by people who actually know Himachal." },
@@ -56,6 +57,8 @@ export default async function HomePage() {
         ? prisma.faq.findMany({ where: { context: "GLOBAL" }, orderBy: { sortOrder: "asc" }, take: 6 })
         : Promise.resolve([]),
     ]);
+
+  const packageCoverImages = await resolveCoverImageUrls(packages);
 
   return (
     <>
@@ -143,6 +146,7 @@ export default async function HomePage() {
                   duration={pkg.duration}
                   destinationName={pkg.destination?.name}
                   priceFrom={pkg.priceFrom?.toString()}
+                  coverImageUrl={packageCoverImages.get(pkg.id)}
                 />
               ))}
             </div>

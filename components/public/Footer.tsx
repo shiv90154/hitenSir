@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getSiteSettings } from "@/lib/db/settings";
 import { Logo } from "@/components/public/Logo";
+import { SocialIcon } from "@/components/public/SocialIcon";
 
 const columns = [
   {
@@ -67,16 +68,18 @@ export async function Footer() {
         {socialLinks.length > 0 && (
           <nav aria-label="Social media">
             <p className="text-xs font-semibold uppercase tracking-wide text-white/50">Follow</p>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-4 flex flex-wrap gap-2.5">
               {socialLinks.map((link) => (
                 <li key={link.label}>
                   <a
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm text-white/70 hover:text-white"
+                    aria-label={link.label}
+                    title={link.label}
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 hover:border-white/30 hover:text-white"
                   >
-                    {link.label}
+                    <SocialIcon label={link.label} />
                   </a>
                 </li>
               ))}

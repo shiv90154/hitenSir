@@ -6,6 +6,8 @@ import { prisma } from "@/lib/db/client";
 import { StructuredData } from "@/components/shared/StructuredData";
 import { breadcrumbList, touristTrip, faqPage } from "@/lib/seo/schema";
 import { getSiteSettings } from "@/lib/db/settings";
+import { resolveMediaByIds } from "@/lib/db/resolve-media";
+import { PackagePhotoGallery } from "@/components/public/PackagePhotoGallery";
 
 export const revalidate = 3600;
 
@@ -42,12 +44,13 @@ export default async function PackageDetailPage({
     notFound();
   }
 
-  const [faqs, settings] = await Promise.all([
+  const [faqs, settings, photos] = await Promise.all([
     prisma.faq.findMany({
       where: { context: "PACKAGE", contextId: pkg.id },
       orderBy: { sortOrder: "asc" },
     }),
     getSiteSettings(),
+    resolveMediaByIds(pkg.images),
   ]);
 
   const whatsappNumber = settings.contactPhone?.replace(/[^\d]/g, "");
@@ -86,19 +89,10 @@ export default async function PackageDetailPage({
         / <span aria-current="page">{pkg.name}</span>
       </nav>
 
-      <div className="mx-auto mt-4 grid max-w-7xl grid-cols-1 gap-3 px-6 sm:grid-cols-3 lg:px-16">
-        <div className="flex h-[320px] items-center justify-center border border-placeholder-border bg-placeholder text-xs font-medium uppercase tracking-wide text-placeholder-label sm:col-span-2">
-          Photo
-        </div>
-        <div className="grid grid-rows-2 gap-3">
-          <div className="flex items-center justify-center border border-placeholder-border bg-placeholder text-xs font-medium uppercase tracking-wide text-placeholder-label">
-            Photo
-          </div>
-          <div className="flex items-center justify-center border border-placeholder-border bg-placeholder text-xs font-medium uppercase tracking-wide text-placeholder-label">
-            Photo
-          </div>
-        </div>
-      </div>
+      <PackagePhotoGallery
+        title={pkg.name}
+        photos={photos.map((m) => ({ id: m.id, url: m.url, alt: m.altText ?? pkg.name }))}
+      />
 
       <div className="mx-auto mt-6 max-w-7xl px-6 lg:px-16">
         <h1 className="font-display text-4xl font-semibold text-ink">{pkg.name}</h1>

@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { updateSeoDefaultsAction, type SeoSettingsFormState } from "@/lib/db/seo-settings-actions";
 import type { SeoDefaults } from "@/lib/db/seo-settings";
 import { Field, inputClass } from "@/components/admin/FormField";
+import { SavedNotice } from "@/components/admin/SavedNotice";
 
 const initialState: SeoSettingsFormState = {};
 
@@ -28,7 +29,7 @@ export function SeoSettingsForm({ seo }: { seo: SeoDefaults }) {
         />
       </Field>
 
-      {state.success && <p className="text-sm text-navy">Saved.</p>}
+      <SavedNotice state={state} />
 
       <button
         type="submit"

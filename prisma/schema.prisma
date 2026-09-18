@@ -188,6 +188,7 @@ model Package {
   excluded         Json?
   highlights       Json?
   faqs             Json?
+  images           Json? // array of Media ids, admin-picked via a checkbox grid (see GalleryForm's pattern)
   seo              Json?
   status           ContentStatus @default(DRAFT)
   createdAt        DateTime      @default(now()) @map("created_at")

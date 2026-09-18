@@ -5,6 +5,7 @@ import { updateHeroSettingsAction, type HeroSettingsFormState } from "@/lib/db/h
 import type { HeroSettings } from "@/lib/db/hero-settings";
 import { Field, inputClass } from "@/components/admin/FormField";
 import { MediaPicker, type MediaOption } from "@/components/admin/MediaPicker";
+import { SavedNotice } from "@/components/admin/SavedNotice";
 
 const initialState: HeroSettingsFormState = {};
 
@@ -30,7 +31,7 @@ export function HeroSettingsForm({ hero, media }: { hero: HeroSettings; media: M
         </p>
       </Field>
 
-      {state.success && <p className="text-sm text-navy">Saved.</p>}
+      <SavedNotice state={state} />
       {state.error && <p className="text-sm text-orange">{state.error}</p>}
 
       <button
