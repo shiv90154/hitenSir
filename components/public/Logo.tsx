@@ -19,6 +19,7 @@ export function Logo({
       width={810}
       height={463}
       priority
+      sizes="240px"
       className={`w-auto ${className}`}
     />
   );
