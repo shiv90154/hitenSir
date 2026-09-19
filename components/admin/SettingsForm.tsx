@@ -35,8 +35,11 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           <Field label="Contact email">
             <input name="contactEmail" type="email" defaultValue={settings.contactEmail} className={inputClass} />
           </Field>
-          <Field label="Contact phone">
+          <Field label="Contact phone (used for WhatsApp, include country code)">
             <input name="contactPhone" defaultValue={settings.contactPhone} className={inputClass} />
+          </Field>
+          <Field label="Second phone (optional)">
+            <input name="contactPhone2" defaultValue={settings.contactPhone2} className={inputClass} />
           </Field>
         </div>
         <Field label="Address">

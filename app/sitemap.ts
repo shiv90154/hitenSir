@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db/client";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [destinations, places, packages, activities, blogs, galleries] = await Promise.all([
     prisma.destination.findMany({ where: { status: "PUBLISHED" }, select: { slug: true, updatedAt: true } }),

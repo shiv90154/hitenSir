@@ -47,7 +47,16 @@ export async function Footer() {
           {settings.contactEmail && (
             <p className="mt-4 text-sm text-white/70">{settings.contactEmail}</p>
           )}
-          {settings.contactPhone && <p className="text-sm text-white/70">{settings.contactPhone}</p>}
+          {settings.contactPhone && (
+            <p className="text-sm text-white/70">
+              <a href={`tel:${settings.contactPhone}`} className="hover:underline">{settings.contactPhone}</a>
+            </p>
+          )}
+          {settings.contactPhone2 && (
+            <p className="text-sm text-white/70">
+              <a href={`tel:${settings.contactPhone2}`} className="hover:underline">{settings.contactPhone2}</a>
+            </p>
+          )}
         </div>
         {columns.map((column) => (
           <nav key={column.title} aria-label={column.title}>

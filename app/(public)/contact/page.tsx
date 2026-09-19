@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
-  const hasDirectContact = settings.contactEmail || settings.contactPhone || settings.address;
+  const hasDirectContact = settings.contactEmail || settings.contactPhone || settings.contactPhone2 || settings.address;
 
   return (
     <div className="mx-auto max-w-2xl px-6 py-16 lg:px-16">
@@ -31,6 +31,16 @@ export default async function ContactPage() {
                 <dd>
                   <a href={`tel:${settings.contactPhone}`} className="hover:underline">
                     {settings.contactPhone}
+                  </a>
+                </dd>
+              </div>
+            )}
+            {settings.contactPhone2 && (
+              <div className="flex gap-2">
+                <dt className="text-ink-soft">Phone:</dt>
+                <dd>
+                  <a href={`tel:${settings.contactPhone2}`} className="hover:underline">
+                    {settings.contactPhone2}
                   </a>
                 </dd>
               </div>

@@ -23,6 +23,7 @@ export async function updateSiteSettingsAction(
     tagline: String(formData.get("tagline") ?? "").trim(),
     contactEmail: String(formData.get("contactEmail") ?? "").trim(),
     contactPhone: String(formData.get("contactPhone") ?? "").trim(),
+    contactPhone2: String(formData.get("contactPhone2") ?? "").trim(),
     address: String(formData.get("address") ?? "").trim(),
     socialFacebook: String(formData.get("socialFacebook") ?? "").trim(),
     socialInstagram: String(formData.get("socialInstagram") ?? "").trim(),

@@ -5,6 +5,7 @@ export interface SiteSettings {
   tagline: string;
   contactEmail: string;
   contactPhone: string;
+  contactPhone2: string;
   address: string;
   socialFacebook: string;
   socialInstagram: string;
@@ -17,6 +18,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   tagline: "Discover Himachal Pradesh",
   contactEmail: "",
   contactPhone: "",
+  contactPhone2: "",
   address: "",
   socialFacebook: "",
   socialInstagram: "",
