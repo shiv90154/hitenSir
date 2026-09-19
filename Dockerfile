@@ -5,10 +5,7 @@ COPY package.json package-lock.json ./
 COPY prisma ./prisma
 RUN npm ci
 COPY . .
-ARG NEXT_PUBLIC_SITE_URL
-ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN SESSION_SECRET=build-time-placeholder-not-used-at-runtime-0000 npm run build
-ENV NODE_ENV=production
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
+# The build pre-renders pages from the database, so it runs at startup (after Postgres is healthy), not at image build.
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run build && NODE_ENV=production npm run start"]
