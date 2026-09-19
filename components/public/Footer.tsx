@@ -40,7 +40,7 @@ export async function Footer() {
     <footer className="mt-24 bg-navy-dark text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-16">
         <div>
-          <Logo siteName={settings.siteName} variant="light" className="text-2xl" />
+          <Logo siteName={settings.siteName} variant="light" className="h-14" />
           <p className="mt-3 max-w-xs text-sm text-white/60">
             {settings.tagline || "Curated travel across Himachal Pradesh."}
           </p>

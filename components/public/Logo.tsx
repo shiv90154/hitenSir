@@ -1,28 +1,31 @@
-// Text wordmark styled after the BharatTrip logo: the site name in navy
-// (or white on dark backgrounds), with a trailing "Trip" picked out in
-// italic orange (falls back to plain text if the name doesn't end in "Trip").
+import Image from "next/image";
+
+// BharatTrip logo image. Pass the height via className (e.g. "h-14"); on dark
+// backgrounds (variant="light") it sits on a white rounded chip so the navy
+// lettering stays readable.
 export function Logo({
   siteName,
   variant = "dark",
-  className = "",
+  className = "h-14",
 }: {
   siteName: string;
   variant?: "dark" | "light";
   className?: string;
 }) {
-  const leadColor = variant === "light" ? "text-white" : "text-navy";
-  const match = siteName.match(/^(.*?)(Trip)$/i);
+  const image = (
+    <Image
+      src="/logo.png"
+      alt={siteName}
+      width={810}
+      height={463}
+      priority
+      className={`w-auto ${className}`}
+    />
+  );
 
-  if (!match) {
-    return <span className={`font-display font-semibold ${leadColor} ${className}`}>{siteName}</span>;
+  if (variant === "light") {
+    return <span className="inline-block rounded-xl bg-white px-3 py-2">{image}</span>;
   }
 
-  const [, lead, trip] = match;
-
-  return (
-    <span className={`font-display font-semibold ${className}`}>
-      <span className={leadColor}>{lead}</span>
-      <span className="text-orange italic">{trip}</span>
-    </span>
-  );
+  return image;
 }
