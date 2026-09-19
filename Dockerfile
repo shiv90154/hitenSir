@@ -8,7 +8,7 @@ COPY . .
 ARG NEXT_PUBLIC_SITE_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN npm run build
+RUN SESSION_SECRET=build-time-placeholder-not-used-at-runtime-0000 npm run build
 ENV NODE_ENV=production
 EXPOSE 3000
 CMD ["sh", "-c", "npx prisma migrate deploy && npm run start"]
