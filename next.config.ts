@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
-// All media is uploaded to and served from this server's own /public/uploads
-// directory (see lib/media/storage.ts), so next/image never needs an
-// external remotePatterns entry.
-const nextConfig: NextConfig = {};
+// Uploaded media lives in /public/uploads and is served directly by nginx in
+// production (files added after build aren't visible to Next's image
+// optimizer), so images are served as-is instead of through /_next/image.
+const nextConfig: NextConfig = {
+  images: { unoptimized: true },
+};
 
 export default nextConfig;
