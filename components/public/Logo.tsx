@@ -16,8 +16,8 @@ export function Logo({
     <Image
       src="/logo.png"
       alt={siteName}
-      width={810}
-      height={463}
+      width={480}
+      height={274}
       priority
       sizes="240px"
       className={`w-auto ${className}`}
