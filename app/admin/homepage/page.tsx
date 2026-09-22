@@ -1,18 +1,21 @@
 import { getHomepageSections } from "@/lib/db/homepage-settings";
 import { getHeroSettings } from "@/lib/db/hero-settings";
 import { getMarqueeSettings } from "@/lib/db/marquee-settings";
+import { getCulturalBannerSettings } from "@/lib/db/cultural-banner";
 import { prisma } from "@/lib/db/client";
 import { HomepageSectionsForm } from "@/components/admin/HomepageSectionsForm";
 import { HeroSettingsForm } from "@/components/admin/HeroSettingsForm";
 import { MarqueeSettingsForm } from "@/components/admin/MarqueeSettingsForm";
+import { CulturalBannerForm } from "@/components/admin/CulturalBannerForm";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminHomepagePage() {
-  const [sections, hero, marquee, media] = await Promise.all([
+  const [sections, hero, marquee, culturalBanner, media] = await Promise.all([
     getHomepageSections(),
     getHeroSettings(),
     getMarqueeSettings(),
+    getCulturalBannerSettings(),
     prisma.media.findMany({
       select: { id: true, url: true, altText: true, title: true },
       orderBy: { createdAt: "desc" },
@@ -38,6 +41,13 @@ export default async function AdminHomepagePage() {
           Scrolling Marquee
         </h2>
         <MarqueeSettingsForm marquee={marquee} />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+          Cultural Travel Banner
+        </h2>
+        <CulturalBannerForm banner={culturalBanner} media={media} />
       </section>
 
       <section className="space-y-3">

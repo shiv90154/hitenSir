@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getSiteSettings } from "@/lib/db/settings";
 import { Logo } from "@/components/public/Logo";
 import { SocialIcon } from "@/components/public/SocialIcon";
@@ -22,7 +23,10 @@ const columns = [
   },
   {
     title: "Company",
-    links: [{ href: "/contact", label: "Contact Us" }],
+    links: [
+      { href: "/contact", label: "Contact Us" },
+      { href: "/contact#fraud-notice", label: "Beware of Fraud" },
+    ],
   },
 ];
 
@@ -95,6 +99,34 @@ export async function Footer() {
             </ul>
           </nav>
         )}
+      </div>
+      <div className="border-t border-white/10 px-6 py-8 lg:px-16">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-start justify-center gap-8">
+          <div className="flex flex-col items-center gap-2.5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-white/50">Accredited By</p>
+            <div className="flex h-16 items-center rounded-xl bg-white px-5">
+              <Image
+                src="/accreditation-logos.png"
+                alt="Ministry of Tourism (Government of India), PATA, ATOAI, TAAI and Incredible India"
+                width={281}
+                height={136}
+                className="h-10 w-auto"
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-2.5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-white/50">We Accept</p>
+            <div className="flex h-16 items-center rounded-xl bg-white px-5">
+              <Image
+                src="/payment-methods.png"
+                alt="We accept Visa, Mastercard, PayPal, American Express, Maestro and Electron"
+                width={276}
+                height={27}
+                className="h-6 w-auto"
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div className="border-t border-white/10 px-6 py-6 text-center text-xs text-white/50 lg:px-16">
         © {new Date().getFullYear()} {settings.siteName}. All rights reserved.

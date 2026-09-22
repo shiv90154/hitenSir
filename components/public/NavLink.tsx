@@ -11,7 +11,7 @@ export function NavLink({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       aria-current={active ? "page" : undefined}
-      className={`text-sm font-medium transition-colors ${
+      className={`text-sm font-semibold transition-colors ${
         active ? "text-navy" : "text-ink-soft hover:text-navy"
       }`}
     >

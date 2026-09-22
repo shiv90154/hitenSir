@@ -33,6 +33,7 @@ export const adminNavGroups: AdminNavGroup[] = [
     title: "Website",
     links: [
       { href: "/admin/homepage", label: "Homepage" },
+      { href: "/admin/popups", label: "Popups" },
       { href: "/admin/navigation", label: "Navigation" },
       { href: "/admin/faqs", label: "FAQs" },
       { href: "/admin/testimonials", label: "Testimonials" },

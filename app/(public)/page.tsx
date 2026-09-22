@@ -12,7 +12,9 @@ import { Marquee } from "@/components/public/Marquee";
 import { getHomepageSections } from "@/lib/db/homepage-settings";
 import { getHeroSettings } from "@/lib/db/hero-settings";
 import { getMarqueeSettings } from "@/lib/db/marquee-settings";
+import { getCulturalBannerSettings } from "@/lib/db/cultural-banner";
 import { resolveCoverImageUrls } from "@/lib/db/resolve-media";
+import { CulturalBanner } from "@/components/public/CulturalBanner";
 
 const whyChooseUs = [
   { title: "Local Expertise", body: "Every itinerary is built by people who actually know Himachal." },
@@ -22,10 +24,11 @@ const whyChooseUs = [
 ];
 
 export default async function HomePage() {
-  const [sections, hero, marquee] = await Promise.all([
+  const [sections, hero, marquee, culturalBanner] = await Promise.all([
     getHomepageSections(),
     getHeroSettings(),
     getMarqueeSettings(),
+    getCulturalBannerSettings(),
   ]);
 
   const [destinations, packages, activities, places, blogPosts, galleries, testimonials, faqs] =
@@ -62,7 +65,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-navy-dark px-6 py-14 text-white sm:py-16 lg:px-16">
+      <section className="relative flex min-h-128 flex-col justify-center overflow-hidden bg-navy-dark px-6 py-24 text-white sm:min-h-152 sm:py-28 lg:px-16">
         {hero.imageUrl && (
           <>
             <Image
@@ -279,6 +282,18 @@ export default async function HomePage() {
             ))}
           </div>
         </section>
+      )}
+
+      {culturalBanner.enabled && culturalBanner.imageUrls.length > 0 && (
+        <div className="pb-20">
+          <CulturalBanner
+            heading={culturalBanner.heading}
+            subheading={culturalBanner.subheading}
+            ctaLabel={culturalBanner.ctaLabel}
+            ctaHref={culturalBanner.ctaHref}
+            imageUrls={culturalBanner.imageUrls}
+          />
+        </div>
       )}
 
       <section className="mx-auto max-w-4xl px-6 pb-20 lg:px-16">

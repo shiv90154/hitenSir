@@ -70,6 +70,22 @@ export default async function ContactPage() {
           <ContactForm />
         </Suspense>
       </div>
+
+      <div
+        id="fraud-notice"
+        className="mt-10 scroll-mt-24 rounded-xl border border-orange/30 bg-cta-bg p-5 text-sm"
+      >
+        <p className="font-display text-base font-semibold text-ink">⚠ Beware of Fraud</p>
+        <p className="mt-2 text-ink-soft">
+          We only contact customers through the official channels listed on this page
+          {settings.contactEmail && <> — email addresses ending in <strong className="text-ink">{settings.contactEmail.split("@")[1]}</strong></>}
+          {settings.contactPhone && <> and the phone number{settings.contactPhone2 ? "s" : ""} listed above</>}.
+          Please do not make payments to any other bank account, UPI ID, or agent claiming to
+          represent {settings.siteName}. If someone contacts you asking for money outside these
+          channels, treat it as fraud and get in touch with us directly to verify before paying
+          anything.
+        </p>
+      </div>
     </div>
   );
 }
