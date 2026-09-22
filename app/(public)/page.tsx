@@ -17,6 +17,7 @@ import { getWhyUsSettings } from "@/lib/db/why-us";
 import { resolveCoverImageUrls, resolveSingleImageUrls } from "@/lib/db/resolve-media";
 import { CulturalBanner } from "@/components/public/CulturalBanner";
 import { WhyUs } from "@/components/public/WhyUs";
+import { HeroBackground } from "@/components/public/HeroBackground";
 
 export default async function HomePage() {
   const [sections, hero, marquee, culturalBanner, whyUs] = await Promise.all([
@@ -65,18 +66,7 @@ export default async function HomePage() {
   return (
     <>
       <section className="relative flex min-h-128 flex-col justify-center overflow-hidden bg-navy-dark px-6 py-24 text-white sm:min-h-152 sm:py-28 lg:px-16">
-        {hero.imageUrl && (
-          <>
-            <Image
-              src={hero.imageUrl}
-              alt=""
-              fill
-              priority
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-navy-dark/70" aria-hidden="true" />
-          </>
-        )}
+        <HeroBackground imageUrls={hero.imageUrls} />
         <div className="relative mx-auto max-w-3xl text-center">
           {hero.eyebrow && (
             <p className="text-xs font-semibold uppercase tracking-widest text-white/60">{hero.eyebrow}</p>

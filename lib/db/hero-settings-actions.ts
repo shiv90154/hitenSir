@@ -21,17 +21,17 @@ export async function updateHeroSettingsAction(
   const eyebrow = formData.get("eyebrow");
   const title = formData.get("title");
   const subtitle = formData.get("subtitle");
-  const imageId = formData.get("imageId");
+  const imageIds = formData.getAll("imageIds") as string[];
 
   if (typeof title !== "string" || !title.trim()) {
     return { error: "Headline is required" };
   }
 
-  const value: Record<string, string | null> = {
+  const value: Record<string, string | string[]> = {
     eyebrow: typeof eyebrow === "string" && eyebrow.trim() ? eyebrow.trim() : DEFAULT_HERO_SETTINGS.eyebrow,
     title: title.trim(),
     subtitle: typeof subtitle === "string" ? subtitle.trim() : "",
-    imageId: typeof imageId === "string" && imageId ? imageId : null,
+    imageIds,
   };
 
   await prisma.websiteSetting.upsert({

@@ -4,7 +4,7 @@ export interface HeroSettings {
   eyebrow: string;
   title: string;
   subtitle: string;
-  imageId: string | null;
+  imageIds: string[];
 }
 
 export const DEFAULT_HERO_SETTINGS: HeroSettings = {
@@ -12,15 +12,26 @@ export const DEFAULT_HERO_SETTINGS: HeroSettings = {
   title: "Plan your next mountain escape",
   subtitle:
     "Destinations, curated packages, and local know-how — everything you need to plan a trip to the Himalayas.",
-  imageId: null,
+  imageIds: [],
 };
 
-export async function getHeroSettings(): Promise<HeroSettings & { imageUrl: string | null }> {
+export async function getHeroSettings(): Promise<HeroSettings & { imageUrls: string[] }> {
   const row = await prisma.websiteSetting.findUnique({ where: { key: "hero" } });
-  const settings = { ...DEFAULT_HERO_SETTINGS, ...(row?.value as Partial<HeroSettings> | undefined) };
+  // Older rows stored a single `imageId` before the hero became a slider —
+  // fall back to that as a one-item list so existing hero photos survive.
+  const stored = row?.value as (Partial<HeroSettings> & { imageId?: string | null }) | undefined;
+  const legacyImageIds = stored?.imageId ? [stored.imageId] : DEFAULT_HERO_SETTINGS.imageIds;
+  const settings = {
+    ...DEFAULT_HERO_SETTINGS,
+    ...stored,
+    imageIds: stored?.imageIds ?? legacyImageIds,
+  };
 
-  if (!settings.imageId) return { ...settings, imageUrl: null };
+  if (settings.imageIds.length === 0) return { ...settings, imageUrls: [] };
 
-  const image = await prisma.media.findUnique({ where: { id: settings.imageId } });
-  return { ...settings, imageUrl: image?.url ?? null };
+  const images = await prisma.media.findMany({ where: { id: { in: settings.imageIds } } });
+  const byId = new Map(images.map((img) => [img.id, img.url]));
+  const imageUrls = settings.imageIds.map((id) => byId.get(id)).filter((url): url is string => Boolean(url));
+
+  return { ...settings, imageUrls };
 }
