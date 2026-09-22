@@ -277,22 +277,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {faqs.length > 0 && (
-        <section className="mx-auto max-w-3xl px-6 py-20 lg:px-16">
-          <h2 className="text-center font-display text-3xl font-semibold text-ink">FAQs</h2>
-          <div className="mt-8 space-y-3">
-            {faqs.map((faq) => (
-              <details key={faq.id} className="rounded-lg border border-border bg-surface p-4">
-                <summary className="cursor-pointer text-sm font-medium text-ink">
-                  {faq.question}
-                </summary>
-                <p className="mt-2 text-sm text-ink-soft">{faq.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
-      )}
-
       {culturalBanner.enabled && culturalBanner.imageUrls.length > 0 && (
         <div className="pb-20">
           <CulturalBanner
@@ -321,6 +305,22 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      {faqs.length > 0 && (
+        <section className="mx-auto max-w-3xl px-6 pb-20 lg:px-16">
+          <h2 className="text-center font-display text-3xl font-semibold text-ink">FAQs</h2>
+          <div className="mt-8 space-y-3">
+            {faqs.map((faq) => (
+              <details key={faq.id} className="rounded-lg border border-border bg-surface p-4">
+                <summary className="cursor-pointer text-sm font-medium text-ink">
+                  {faq.question}
+                </summary>
+                <p className="mt-2 text-sm text-ink-soft">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
     </>
   );
 }
