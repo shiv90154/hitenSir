@@ -34,7 +34,7 @@ export async function uploadMediaAction(
   }
   const extension = ALLOWED_MIME_TYPES[file.type];
   if (!extension) {
-    return { error: "Only JPEG, PNG, WebP, AVIF, or GIF images are allowed" };
+    return { error: "Only JPEG, PNG, WebP, AVIF, GIF, BMP, or TIFF images are allowed" };
   }
 
   const inputBuffer = Buffer.from(await file.arrayBuffer());
