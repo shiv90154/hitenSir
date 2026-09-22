@@ -48,19 +48,30 @@ export async function Footer() {
           <p className="mt-3 max-w-xs text-sm text-white/60">
             {settings.tagline || "Curated travel across Himachal Pradesh."}
           </p>
-          {settings.contactEmail && (
-            <p className="mt-4 text-sm text-white/70">{settings.contactEmail}</p>
-          )}
-          {settings.contactPhone && (
-            <p className="text-sm text-white/70">
-              <a href={`tel:${settings.contactPhone}`} className="hover:underline">{settings.contactPhone}</a>
-            </p>
-          )}
-          {settings.contactPhone2 && (
-            <p className="text-sm text-white/70">
-              <a href={`tel:${settings.contactPhone2}`} className="hover:underline">{settings.contactPhone2}</a>
-            </p>
-          )}
+          <div className="mt-4 space-y-1.5">
+            {settings.contactEmail && (
+              <p className="text-sm text-white/70">
+                <a href={`mailto:${settings.contactEmail}`} className="hover:underline">
+                  {settings.contactEmail}
+                </a>
+              </p>
+            )}
+            {settings.contactPhone && (
+              <p className="text-sm text-white/70">
+                <a href={`tel:${settings.contactPhone}`} className="hover:underline">
+                  {settings.contactPhone}
+                </a>
+              </p>
+            )}
+            {settings.contactPhone2 && (
+              <p className="text-sm text-white/70">
+                <a href={`tel:${settings.contactPhone2}`} className="hover:underline">
+                  {settings.contactPhone2}
+                </a>
+              </p>
+            )}
+            {settings.address && <p className="max-w-xs text-sm text-white/70">{settings.address}</p>}
+          </div>
         </div>
         {columns.map((column) => (
           <nav key={column.title} aria-label={column.title}>
