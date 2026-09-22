@@ -11,6 +11,8 @@ export interface SiteSettings {
   socialInstagram: string;
   socialTwitter: string;
   socialYoutube: string;
+  tawkEnabled: boolean;
+  tawkWidgetUrl: string;
 }
 
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
@@ -24,6 +26,8 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   socialInstagram: "",
   socialTwitter: "",
   socialYoutube: "",
+  tawkEnabled: true,
+  tawkWidgetUrl: "https://embed.tawk.to/699f0d06b59a521c38a1e9f1/default",
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {

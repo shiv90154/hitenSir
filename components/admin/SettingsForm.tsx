@@ -67,6 +67,29 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
         </div>
       </section>
 
+      <section className="space-y-4">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+          Live Chat (tawk.to)
+        </h2>
+        <label className="flex items-center justify-between rounded-lg border border-border bg-white px-4 py-3">
+          <span>
+            <span className="block text-sm font-medium text-ink">Show chat widget</span>
+            <span className="block text-xs text-ink-soft">
+              Adds the tawk.to chat bubble to every public page.
+            </span>
+          </span>
+          <input type="checkbox" name="tawkEnabled" defaultChecked={settings.tawkEnabled} />
+        </label>
+        <Field label="Widget URL (from tawk.to → Administration → Channels → Chat Widget)">
+          <input
+            name="tawkWidgetUrl"
+            defaultValue={settings.tawkWidgetUrl}
+            placeholder="https://embed.tawk.to/PROPERTY_ID/WIDGET_ID"
+            className={inputClass}
+          />
+        </Field>
+      </section>
+
       <SavedNotice state={state} />
       {state.error && <p className="text-sm text-orange">{state.error}</p>}
 

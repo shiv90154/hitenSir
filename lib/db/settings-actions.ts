@@ -29,9 +29,11 @@ export async function updateSiteSettingsAction(
     socialInstagram: String(formData.get("socialInstagram") ?? "").trim(),
     socialTwitter: String(formData.get("socialTwitter") ?? "").trim(),
     socialYoutube: String(formData.get("socialYoutube") ?? "").trim(),
+    tawkEnabled: formData.get("tawkEnabled") === "on",
+    tawkWidgetUrl: String(formData.get("tawkWidgetUrl") ?? "").trim(),
   };
 
-  const jsonValue: Record<string, string> = { ...value };
+  const jsonValue: Record<string, string | boolean> = { ...value };
 
   await prisma.websiteSetting.upsert({
     where: { key: "site" },

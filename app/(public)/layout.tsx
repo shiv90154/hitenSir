@@ -4,6 +4,7 @@ import { BottomTabBar } from "@/components/public/BottomTabBar";
 import { FloatingSideWidget } from "@/components/public/FloatingSideWidget";
 import { QuotePopupModal } from "@/components/public/QuotePopupModal";
 import { CtaPopupWidget } from "@/components/public/CtaPopupWidget";
+import { TawkWidget } from "@/components/public/TawkWidget";
 import { getSiteSettings } from "@/lib/db/settings";
 import { getQuotePopupSettings } from "@/lib/db/quote-popup";
 import { getCtaPopupSettings } from "@/lib/db/cta-popup";
@@ -38,6 +39,7 @@ export default async function PublicLayout({ children }: { children: React.React
         buttons={ctaPopup.buttons}
         phone={settings.contactPhone}
       />
+      <TawkWidget enabled={settings.tawkEnabled} widgetUrl={settings.tawkWidgetUrl} />
     </div>
   );
 }
