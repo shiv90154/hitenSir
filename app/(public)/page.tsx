@@ -13,22 +13,18 @@ import { getHomepageSections } from "@/lib/db/homepage-settings";
 import { getHeroSettings } from "@/lib/db/hero-settings";
 import { getMarqueeSettings } from "@/lib/db/marquee-settings";
 import { getCulturalBannerSettings } from "@/lib/db/cultural-banner";
-import { resolveCoverImageUrls } from "@/lib/db/resolve-media";
+import { getWhyUsSettings } from "@/lib/db/why-us";
+import { resolveCoverImageUrls, resolveSingleImageUrls } from "@/lib/db/resolve-media";
 import { CulturalBanner } from "@/components/public/CulturalBanner";
-
-const whyChooseUs = [
-  { title: "Local Expertise", body: "Every itinerary is built by people who actually know Himachal." },
-  { title: "Curated Stays", body: "Hand-picked hotels and homestays, not random listings." },
-  { title: "Flexible Planning", body: "Customize any package to fit your dates and budget." },
-  { title: "Always Reachable", body: "Real support before, during, and after your trip." },
-];
+import { WhyUs } from "@/components/public/WhyUs";
 
 export default async function HomePage() {
-  const [sections, hero, marquee, culturalBanner] = await Promise.all([
+  const [sections, hero, marquee, culturalBanner, whyUs] = await Promise.all([
     getHomepageSections(),
     getHeroSettings(),
     getMarqueeSettings(),
     getCulturalBannerSettings(),
+    getWhyUsSettings(),
   ]);
 
   const [destinations, packages, activities, places, blogPosts, galleries, testimonials, faqs] =
@@ -62,6 +58,9 @@ export default async function HomePage() {
     ]);
 
   const packageCoverImages = await resolveCoverImageUrls(packages);
+  const testimonialAvatars = await resolveSingleImageUrls(
+    testimonials.map((t) => ({ id: t.id, imageId: t.avatarMediaId }))
+  );
 
   return (
     <>
@@ -239,16 +238,16 @@ export default async function HomePage() {
       )}
 
       {sections.showWhyChooseUs && (
-        <section className="bg-navy-dark px-6 py-20 text-white lg:px-16">
-          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 lg:grid-cols-4">
-            {whyChooseUs.map((item) => (
-              <div key={item.title}>
-                <p className="font-display text-lg font-semibold">{item.title}</p>
-                <p className="mt-2 text-sm text-white/70">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <WhyUs
+          eyebrow={whyUs.eyebrow}
+          heading={whyUs.heading}
+          description={whyUs.description}
+          imageUrl1={whyUs.imageUrl1}
+          imageUrl2={whyUs.imageUrl2}
+          stats={whyUs.stats}
+          buttonLabel={whyUs.buttonLabel}
+          buttonHref={whyUs.buttonHref}
+        />
       )}
 
       {testimonials.length > 0 && (
@@ -257,13 +256,33 @@ export default async function HomePage() {
             What Travellers Say
           </h2>
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-            {testimonials.map((t) => (
-              <div key={t.id} className="rounded-xl border border-border bg-surface p-6">
-                <p className="text-sm text-ink-soft">&ldquo;{t.quote}&rdquo;</p>
-                <p className="mt-4 text-sm font-semibold text-ink">{t.authorName}</p>
-                {t.authorLocation && <p className="text-xs text-ink-soft">{t.authorLocation}</p>}
-              </div>
-            ))}
+            {testimonials.map((t) => {
+              const avatarUrl = testimonialAvatars.get(t.id);
+              return (
+                <div key={t.id} className="rounded-xl border border-border bg-surface p-6">
+                  <p className="text-sm text-ink-soft">&ldquo;{t.quote}&rdquo;</p>
+                  <div className="mt-4 flex items-center gap-3">
+                    {avatarUrl ? (
+                      <Image
+                        src={avatarUrl}
+                        alt=""
+                        width={40}
+                        height={40}
+                        className="h-10 w-10 shrink-0 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-status-published-bg text-sm font-semibold text-navy">
+                        {t.authorName.charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                    <div>
+                      <p className="text-sm font-semibold text-ink">{t.authorName}</p>
+                      {t.authorLocation && <p className="text-xs text-ink-soft">{t.authorLocation}</p>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
       )}

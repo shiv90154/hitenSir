@@ -15,6 +15,33 @@ export async function resolveMediaByIds(ids: unknown) {
 }
 
 /**
+ * Batch-resolves a single Media id field (e.g. Testimonial.avatarMediaId)
+ * across many items in one query, keyed by the item's own id.
+ */
+export async function resolveSingleImageUrls(
+  items: { id: string; imageId: string | null }[]
+): Promise<Map<string, string>> {
+  const mediaIdByItem = new Map<string, string>();
+  for (const item of items) {
+    if (item.imageId) mediaIdByItem.set(item.id, item.imageId);
+  }
+  if (mediaIdByItem.size === 0) return new Map();
+
+  const media = await prisma.media.findMany({
+    where: { id: { in: [...mediaIdByItem.values()] } },
+    select: { id: true, url: true },
+  });
+  const urlByMediaId = new Map(media.map((m) => [m.id, m.url]));
+
+  const result = new Map<string, string>();
+  for (const [itemId, mediaId] of mediaIdByItem) {
+    const url = urlByMediaId.get(mediaId);
+    if (url) result.set(itemId, url);
+  }
+  return result;
+}
+
+/**
  * Batch-resolves just the first image of each item's `images` id-array
  * (e.g. package cover photos on a listing page) in a single query, keyed
  * by the item's own id.

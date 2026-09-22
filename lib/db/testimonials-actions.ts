@@ -25,6 +25,7 @@ export async function createTestimonialAction(
     rating: formData.get("rating"),
     quote: formData.get("quote"),
     sortOrder: formData.get("sortOrder"),
+    avatarMediaId: formData.get("avatarMediaId"),
   });
   if (!parsed.success) return { fieldErrors: fieldErrorsFrom(parsed.error) };
 
@@ -48,6 +49,7 @@ export async function updateTestimonialAction(
     rating: formData.get("rating"),
     quote: formData.get("quote"),
     sortOrder: formData.get("sortOrder"),
+    avatarMediaId: formData.get("avatarMediaId"),
   });
   if (!parsed.success) return { fieldErrors: fieldErrorsFrom(parsed.error) };
 

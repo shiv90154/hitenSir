@@ -6,14 +6,21 @@ import { TestimonialRow } from "@/components/admin/TestimonialRow";
 export const dynamic = "force-dynamic";
 
 export default async function AdminTestimonialsPage() {
-  const testimonials = await prisma.testimonial.findMany({ orderBy: { sortOrder: "asc" } });
+  const [testimonials, media] = await Promise.all([
+    prisma.testimonial.findMany({ orderBy: { sortOrder: "asc" } }),
+    prisma.media.findMany({
+      select: { id: true, url: true, altText: true, title: true },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+  const mediaById = new Map(media.map((m) => [m.id, m.url]));
 
   return (
     <div className="space-y-8">
       <h1 className="font-display text-2xl font-semibold text-ink">Testimonials</h1>
 
       <div className="rounded-lg border border-border bg-white p-5">
-        <TestimonialForm />
+        <TestimonialForm media={media} />
       </div>
 
       <div className="overflow-hidden rounded-lg border border-border bg-white">
@@ -36,7 +43,11 @@ export default async function AdminTestimonialsPage() {
             {testimonials.map((testimonial) => (
               <TestimonialRow
                 key={testimonial.id}
-                testimonial={testimonial}
+                testimonial={{
+                  ...testimonial,
+                  avatarUrl: testimonial.avatarMediaId ? (mediaById.get(testimonial.avatarMediaId) ?? null) : null,
+                }}
+                media={media}
                 deleteAction={async () => {
                   "use server";
                   await deleteTestimonialAction(testimonial.id);

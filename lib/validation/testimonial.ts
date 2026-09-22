@@ -6,6 +6,12 @@ export const testimonialSchema = z.object({
   rating: z.coerce.number().int().min(1).max(5).default(5),
   quote: z.string().trim().min(2, "Quote is required"),
   sortOrder: z.coerce.number().int().default(0),
+  avatarMediaId: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => (v ? v : null)),
 });
 
 export type TestimonialInput = z.infer<typeof testimonialSchema>;

@@ -3,10 +3,11 @@
 import { useActionState } from "react";
 import { createTestimonialAction, type TestimonialFormState } from "@/lib/db/testimonials-actions";
 import { Field, inputClass } from "@/components/admin/FormField";
+import { MediaPicker, type MediaOption } from "@/components/admin/MediaPicker";
 
 const initialState: TestimonialFormState = {};
 
-export function TestimonialForm() {
+export function TestimonialForm({ media }: { media: MediaOption[] }) {
   const [state, formAction, isPending] = useActionState(createTestimonialAction, initialState);
   const errors = state.fieldErrors ?? {};
 
@@ -31,6 +32,9 @@ export function TestimonialForm() {
           <input name="sortOrder" type="number" defaultValue={0} className={inputClass} />
         </Field>
       </div>
+      <Field label="Photo (optional — shown as a small round avatar)">
+        <MediaPicker name="avatarMediaId" media={media} />
+      </Field>
 
       {state.error && <p className="text-sm text-orange">{state.error}</p>}
 

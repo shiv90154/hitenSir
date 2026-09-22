@@ -1,9 +1,11 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import Image from "next/image";
 import { updateTestimonialAction, type TestimonialFormState } from "@/lib/db/testimonials-actions";
 import { ConfirmSubmitButton } from "@/components/admin/ConfirmSubmitButton";
-import { inputClass } from "@/components/admin/FormField";
+import { Field, inputClass } from "@/components/admin/FormField";
+import { MediaPicker, type MediaOption } from "@/components/admin/MediaPicker";
 
 export interface TestimonialRowData {
   id: string;
@@ -12,15 +14,19 @@ export interface TestimonialRowData {
   quote: string;
   rating: number;
   sortOrder: number;
+  avatarMediaId: string | null;
+  avatarUrl: string | null;
 }
 
 const initialState: TestimonialFormState = {};
 
 export function TestimonialRow({
   testimonial,
+  media,
   deleteAction,
 }: {
   testimonial: TestimonialRowData;
+  media: MediaOption[];
   deleteAction: () => Promise<void>;
 }) {
   const [editing, setEditing] = useState(false);
@@ -30,7 +36,24 @@ export function TestimonialRow({
   if (!editing) {
     return (
       <tr className="hover:bg-admin-surface">
-        <td className="px-4 py-3 font-medium text-ink">{testimonial.authorName}</td>
+        <td className="px-4 py-3">
+          <div className="flex items-center gap-3">
+            {testimonial.avatarUrl ? (
+              <Image
+                src={testimonial.avatarUrl}
+                alt=""
+                width={32}
+                height={32}
+                className="h-8 w-8 shrink-0 rounded-full object-cover"
+              />
+            ) : (
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-admin-surface text-xs font-semibold text-ink-soft">
+                {testimonial.authorName.charAt(0).toUpperCase()}
+              </span>
+            )}
+            <span className="font-medium text-ink">{testimonial.authorName}</span>
+          </div>
+        </td>
         <td className="max-w-md truncate px-4 py-3 text-ink-soft">{testimonial.quote}</td>
         <td className="px-4 py-3 text-right">
           <div className="flex justify-end gap-3">
@@ -94,6 +117,9 @@ export function TestimonialRow({
               <input name="sortOrder" type="number" defaultValue={testimonial.sortOrder} className={inputClass} />
             </div>
           </div>
+          <Field label="Photo (optional — shown as a small round avatar)">
+            <MediaPicker name="avatarMediaId" media={media} defaultValue={testimonial.avatarMediaId} />
+          </Field>
           {state.error && <p className="text-sm text-orange">{state.error}</p>}
           <div className="flex items-center gap-3">
             <button
